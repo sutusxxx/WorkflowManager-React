@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import type { Project } from "./project";
+import type { Project } from "../../interfaces/project";
 
 export default function ProjectList({ projects }: { projects: Project[] }) {
     return (

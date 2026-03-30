@@ -1,6 +1,6 @@
 import ProjectList from "~/components/projects/ProjectList";
 import type { Route } from "./+types/projects";
-import type { Project } from "~/components/projects/project";
+import type { Project } from "~/interfaces/project";
 
 export async function loader() {
     const response = await fetch("http://localhost:8080/api/v1/projects")
