@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from "axios";
 
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
-const API_VERSION = process.env.API_VERSION || "v1";
+const API_BASE_URL = import.meta.env.API_BASE_URL || "http://localhost:8080";
+const API_VERSION = import.meta.env.API_VERSION || "v1";
 
 export const serverInstance: AxiosInstance = (() => {
   return axios.create({

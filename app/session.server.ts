@@ -12,7 +12,7 @@ type SessionFlashData = {
     error: string;
 };
 
-const sessionSecret = process.env.SESSION_SECRET || "s3cret1";
+const sessionSecret = import.meta.env.SESSION_SECRET || "s3cret1";
 
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage<SessionData, SessionFlashData>(
