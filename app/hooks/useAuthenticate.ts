@@ -16,15 +16,15 @@ export type useAuthenticateHookResult = {
 };
 
 export function useAuthenticate(): useAuthenticateHookResult {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: (credentials: { username: string; password: string }) => {
-      return fetch('/session/login', {
-        method: 'POST',
+      return fetch("/session/login", {
+        method: "POST",
         body: JSON.stringify(credentials),
       });
     },
@@ -34,7 +34,7 @@ export function useAuthenticate(): useAuthenticateHookResult {
     },
     onError: (error) => {
       console.log(error);
-      setError('Login failed. Please check your credentials and try again.');
+      setError("Login failed. Please check your credentials and try again.");
     },
   });
 

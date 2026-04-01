@@ -5,9 +5,9 @@ import { clientInstance } from "~/lib/api/client";
 
 export default function ProjectList() {
     const { data: projects } = useQuery({
-        queryKey: ['projects'],
+        queryKey: ["projects"],
         queryFn: async () => {
-            const response = await clientInstance.get('/projects');
+            const response = await clientInstance.get("/projects");
             return response.data as Project[];
         },
     });
