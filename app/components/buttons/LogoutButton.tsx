@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useFetcher } from "react-router";
 
 export default function LogoutButton() {
@@ -6,7 +6,9 @@ export default function LogoutButton() {
 
     return (
         <fetcher.Form method="GET" action="/session/logout">
-            <Button type="submit">{fetcher.state !== "idle" ? "Logging out..." : "Logout"}</Button> 
+            <Button type="submit">
+                <Typography color="white">{fetcher.state !== "idle" ? "Logging out..." : "Logout"}</Typography>    
+            </Button> 
         </fetcher.Form>
     )
 }
