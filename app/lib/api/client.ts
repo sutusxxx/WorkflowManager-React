@@ -1,20 +1,11 @@
-import axios from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 
-export const clientApi = (() => {
+export const clientInstance: AxiosInstance = (() => {
   return axios.create({
     baseURL: "/api",
     headers: {
       Accept: 'application/json, text/plain, */*',
+      "Content-Type": 'application/json',
     },
   });
 })();
-
-clientApi.interceptors.response.use(undefined, async (error) => {
-  if (error.response?.status === 401 && window.location.pathname !== "/login") {
-    console.log("Unauthorized, redirecting to login...");
-    window.location.href = "/login";
-    return;
-  }
-
-  throw error;
-});

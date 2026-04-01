@@ -7,6 +7,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { makeQueryClient } from './lib/query/client';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { Container, CssBaseline } from '@mui/material';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -44,7 +45,10 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <CssBaseline />
+      <Container>
+        <Outlet />
+      </Container>
     </QueryClientProvider>
   );
 }
