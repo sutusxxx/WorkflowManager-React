@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import type { Project } from "../../interfaces/project";
 import { useQuery } from "@tanstack/react-query";
 import { clientInstance } from "~/lib/api/client";
@@ -13,8 +13,15 @@ export default function ProjectList() {
     });
 
     return (
-        <Box>
-            {projects?.map(project => <Typography key={project.key}>{project.name} - {project.key}: {project.description}</Typography>)}
-        </Box>
+        <Stack
+            spacing={1}
+            sx={{
+                marginLeft: 2,
+            }}
+        >
+            {projects?.map(project =>
+                <Typography key={project.key} fontWeight="bold">{project.key}</Typography>
+            )}
+        </Stack>
     );
 }

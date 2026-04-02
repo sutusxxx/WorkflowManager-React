@@ -1,5 +1,5 @@
 import { serverInstance } from "~/lib/api/server";
-import { getSession } from "~/session.server";
+import { destroySession, getSession } from "~/session.server";
 import type { Route } from "./+types/api.$";
 
 async function proxy(request: Request, path: string) {
@@ -18,6 +18,15 @@ async function proxy(request: Request, path: string) {
         },
         data: request.method === "GET" ? undefined : request.body,
     });
+
+    if (response.status === 401) {
+        return Response.json(
+            { error: "Unauthorized" },
+            {
+                headers: { "Set-Cookie": await destroySession(session) },
+            }
+        );
+    }
 
     const data = response.data;
 

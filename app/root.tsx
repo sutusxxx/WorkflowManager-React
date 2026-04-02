@@ -7,8 +7,8 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { makeQueryClient } from "./lib/query/client";
 import { QueryClientProvider } from "@tanstack/react-query";
-import {  CssBaseline } from "@mui/material";
-import MainContainer from "./components/layouts/MainContainer";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { theme } from "./styles/theme";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -47,9 +47,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <CssBaseline />
-      <MainContainer>
+      <ThemeProvider theme={theme}>
         <Outlet />
-      </MainContainer>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

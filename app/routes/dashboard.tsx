@@ -1,20 +1,14 @@
-import ProjectList from "~/components/projects/ProjectList";
-import type { Route } from "../+types/root";
+import type { Route } from "./+types/dashboard";
 import { getSession } from "~/session.server";
-import { redirect } from "react-router";
-import { Stack } from "@mui/material";
 
 export async function loader({ request }: Route.LoaderArgs) {
     const session = await getSession(request.headers.get("Cookie"));
-    if (!session.get("user")) return redirect("/login");
 
-    return { user: session.get("user")};
+    return { user: session.get("user") };
 }
 
-export default function Dashboard() {
+export default function Dashboard({ loaderData }: Route.ComponentProps) {
     return (
-        <Stack>
-            <ProjectList />
-        </Stack>
+        <>asd</>
     );
 }

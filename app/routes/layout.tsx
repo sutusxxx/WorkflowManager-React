@@ -1,50 +1,72 @@
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Box, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import WorkspacesIcon from "@mui/icons-material/Workspaces";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    List,
+    ListItem,
+    styled,
+    Typography,
+} from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Outlet } from "react-router";
-import LogoutButton from "~/components/buttons/LogoutButton";
 import Sidebar from "~/components/misc/Sidebar";
 import { useState } from "react";
-import ProjectList from "~/components/projects/ProjectList";
+import ProjectList from "~/features/projects/ProjectList";
+import type { Route } from "./+types/layout";
+import { getSession } from "~/session.server";
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "~/constants/components.constant";
+import Header from "~/components/misc/Header";
 
-export default function MainLayout() {
+export async function loader({ request }: Route.LoaderArgs) {
+    const session = await getSession(request.headers.get("Cookie"));
+
+    return { user: session.get("user") };
+}
+
+const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
+    open?: boolean;
+}>(({ theme }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginTop: `${HEADER_HEIGHT + 20}px`,
+    marginLeft: `-${SIDEBAR_WIDTH}px`,
+    variants: [
+        {
+            props: ({ open }) => open,
+            style: {
+                transition: theme.transitions.create("margin", {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+                marginLeft: 0,
+            },
+        },
+    ],
+}));
+
+export default function MainLayout({ loaderData }: Route.ComponentProps) {
     const [open, setOpen] = useState<boolean>(true);
 
+    const user = loaderData.user;
+
     return (
-        <Box>
-            <AppBar>
-                <Toolbar>
-                    <Stack
-                        direction="row"
-                        sx={{
-                            width: "100%",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            onClick={() => setOpen(true)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <LogoutButton />
-                    </Stack>
-                </Toolbar>
-            </AppBar>
-            <Sidebar open={open} onClose={() => setOpen(false)} variant="permanent">
+        <Box display="flex">
+            <Header open={open} onSidebarOpen={() => setOpen(true)} authenticated={user != null} />
+            <Sidebar open={open} onClose={() => setOpen(false)} width={SIDEBAR_WIDTH}>
                 <List>
-                    <ListItem key="projects" disablePadding sx={{ display: 'block' }}>
-                        <Accordion elevation={0}>
+                    <ListItem key="projects" disablePadding sx={{ display: "block" }}>
+                        <Accordion elevation={0} square>
                             <AccordionSummary
                                 expandIcon={<ArrowDropDownIcon />}
                                 aria-controls="projects-content"
                                 id="projects-header"
                             >
-                                <Typography component="span">Projects</Typography>
+                                <Typography fontWeight="bold">Projects</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <ProjectList />
@@ -53,7 +75,9 @@ export default function MainLayout() {
                     </ListItem>
                 </List>
             </Sidebar>
-            <Outlet />
+            <Main open={open}>
+                <Outlet />
+            </Main>
         </Box>
     )
 }
