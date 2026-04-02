@@ -7,7 +7,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     return { user: session.get("user") };
 }
 
-export default function Dashboard({ loaderData }: Route.ComponentProps) {
+export default function Page({ loaderData }: Route.ComponentProps) {
     return (
         <>asd</>
     );

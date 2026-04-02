@@ -49,7 +49,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     ],
 }));
 
-export default function MainLayout({ loaderData }: Route.ComponentProps) {
+export default function Layout({ loaderData }: Route.ComponentProps) {
     const [open, setOpen] = useState<boolean>(true);
 
     const user = loaderData.user;

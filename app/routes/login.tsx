@@ -27,7 +27,7 @@ export async function loader({
   );
 }
 
-export default function Login() {
+export default function Page() {
   return (
     <Box height="100vh" display="flex" justifyContent="center" alignItems="center">
       <LoginForm />
