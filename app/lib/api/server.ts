@@ -10,5 +10,6 @@ export const serverInstance: AxiosInstance = (() => {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
     },
+    validateStatus: (status: number) => status < 500
   });
 })();
