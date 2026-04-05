@@ -8,13 +8,15 @@ export default [
     layout("routes/layout.tsx", [
         route("dashboard", "routes/dashboard.tsx"),
 
-        ...prefix("projects/:projectKey", [
+        route("projects/:projectKey", "routes/project.tsx", [
             route("summary", "routes/project.summary.tsx"),
             route("board", "routes/project.board.tsx"),
             route("issues", "routes/project.issues.tsx"),
             route("issues/:issueKey", "routes/issue.tsx"),
         ]),
     ]),
+
+    route("settings", "routes/settings.tsx"),
 
     route("api/:path", "routes/api.$.ts"),
 

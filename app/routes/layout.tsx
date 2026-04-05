@@ -28,12 +28,11 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     open?: boolean;
 }>(({ theme }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
-    marginTop: `${HEADER_HEIGHT + 20}px`,
+    marginTop: `${HEADER_HEIGHT}px`,
     marginLeft: `-${SIDEBAR_WIDTH}px`,
     variants: [
         {
@@ -59,6 +58,20 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
             <Header open={open} onSidebarOpen={() => setOpen(true)} authenticated={user != null} />
             <Sidebar open={open} onClose={() => setOpen(false)} width={SIDEBAR_WIDTH}>
                 <List>
+                    <ListItem key="dashboard" disablePadding sx={{ display: "block" }}>
+                        <Accordion elevation={0} square>
+                            <AccordionSummary
+                                expandIcon={<ArrowDropDownIcon />}
+                                aria-controls="dashboard"
+                                id="dashboard-header"
+                            >
+                                <Typography fontWeight="bold">Dashboards</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                {/* // TODO: Add dashboard endpoint... */}
+                            </AccordionDetails>
+                        </Accordion>
+                    </ListItem>
                     <ListItem key="projects" disablePadding sx={{ display: "block" }}>
                         <Accordion elevation={0} square>
                             <AccordionSummary

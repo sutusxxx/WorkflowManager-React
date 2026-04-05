@@ -1,3 +1,4 @@
+import Container from "~/components/layouts/Container";
 import type { Route } from "./+types/dashboard";
 import { getSession } from "~/session.server";
 
@@ -9,6 +10,8 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Page({ loaderData }: Route.ComponentProps) {
     return (
-        <>asd</>
+        <Container>
+            Dashboard page works
+        </Container>
     );
 }

@@ -26,6 +26,7 @@ async function proxy(request: Request, path: string) {
                 { error: HTTP_ERRORS[401]},
                 {
                     headers: { "Set-Cookie": await destroySession(session) },
+                    status: 401,
                 }
             );
         }
