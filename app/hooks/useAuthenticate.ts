@@ -29,11 +29,9 @@ export function useAuthenticate(): useAuthenticateHookResult {
       });
     },
     onSuccess: (response) => {
-      console.log(response);
       navigate("/dashboard");
     },
     onError: (error) => {
-      console.log(error);
       setError("Login failed. Please check your credentials and try again.");
     },
   });

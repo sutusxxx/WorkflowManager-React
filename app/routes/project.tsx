@@ -39,7 +39,7 @@ export default function Project({ params }: Route.ComponentProps) {
             >
                 <Tabs value={currentTab === -1 ? 1 : currentTab} onChange={(_, index) => navigate(PROJECT_TABS[index].path)}>
                     {PROJECT_TABS.map(tab =>
-                        <Tab label={tab.title} />
+                        <Tab key={tab.title} label={tab.title} />
                     )}
                 </Tabs>
             </Box>
