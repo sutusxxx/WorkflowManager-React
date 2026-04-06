@@ -3,24 +3,29 @@ import { isSortable } from "@dnd-kit/react/sortable";
 import { Stack } from "@mui/material";
 import { useSortable } from '@dnd-kit/react/sortable';
 import { Card } from '@mui/material';
-import { useCallback } from "react";
+import { useCallback, type ReactNode } from "react";
 
+type Identifier = string | number;
 
-function SortableItem<T_ID extends (string | number)>({ id, index }: {
-    id: T_ID,
+type SortableItemProps = {
+    id: Identifier,
     index: number,
-}) {
+    children: ReactNode,
+};
+
+function SortableItem({ id, index, children }: SortableItemProps) {
     const { ref } = useSortable({ id, index });
 
     return (
-        <Card ref={ref} sx={{ padding: 1}}>Item {id}</Card>
+        <Card ref={ref} sx={{ padding: 1 }}>{children}</Card>
     );
 }
 
-export default function SortableList<T, T_ID extends (string | number)>({ items, onSort, getKey }: {
+export default function SortableList<T>({ items, onSort, getId, renderComponent }: {
     items: T[],
     onSort: (sortedItems: T[]) => void,
-    getKey: (item: T) => T_ID,
+    getId: (item: T) => Identifier,
+    renderComponent: (item: T) => ReactNode,
 }) {
     const sortItems = useCallback((index: number, initialIndex: number) => {
         const newItems = [...items];
@@ -46,9 +51,14 @@ export default function SortableList<T, T_ID extends (string | number)>({ items,
             }}
         >
             <Stack spacing={1}>
-                {items.map((item, index) =>
-                    <SortableItem key={getKey(item)} id={getKey(item)} index={index} />
-                )}
+                {items.map((item, index) => {
+                    const id = getId(item);
+                    return (
+                        <SortableItem key={id} id={id} index={index} >
+                            {renderComponent(item)}
+                        </SortableItem>
+                    )
+                })}
             </Stack>
         </DragDropProvider>
     );
