@@ -18,7 +18,7 @@ export default [
 
     route("settings", "routes/settings.tsx"),
 
-    route("api/:path", "routes/api.$.ts"),
+    route("api/*", "routes/api.$.ts"),
 
     ...prefix("session", [
         route("login", "routes/session.login.ts"),

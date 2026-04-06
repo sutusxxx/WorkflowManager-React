@@ -1,3 +1,4 @@
 export const QUERY_KEY = {
-    PROJECTS: "projects"
+    PROJECTS: "projects",
+    ISSUES: "issues",
 };

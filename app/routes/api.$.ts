@@ -40,9 +40,11 @@ async function proxy(request: Request, path: string) {
 }
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-    return proxy(request, params.path);
+    const { "*": splat } = params;
+    return proxy(request, splat);
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
-    return proxy(request, params.path);
+    const { "*": splat } = params;
+    return proxy(request, splat);
 }
