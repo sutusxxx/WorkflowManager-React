@@ -48,7 +48,7 @@ export default function IssueList({ projectKey }: {
     return (
         <SortableList
             items={data.issues}
-            onSort={(sorted) => {}}
+            onSort={(sorted) => { }}
             getId={(item) => item.key}
             renderComponent={(item) => (
                 <IssueListItem item={item} />
