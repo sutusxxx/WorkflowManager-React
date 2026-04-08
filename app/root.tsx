@@ -41,7 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-  const queryClient = makeQueryClient();
+const queryClient = makeQueryClient();
 
 export default function App() {
 

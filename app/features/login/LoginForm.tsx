@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useAuthenticate } from "~/hooks/useAuthenticate";
 
 export default function LoginForm() {
@@ -10,7 +10,7 @@ export default function LoginForm() {
     } = useAuthenticate();
 
     return (
-        <div>
+        <Box>
             <Typography>Login</Typography>
             {error && <Typography color="error">{error}</Typography>}
             <form>
@@ -22,6 +22,6 @@ export default function LoginForm() {
                 <br />
                 <Button type="button" onClick={authenticate}>Login</Button>
             </form>
-        </div>
+        </Box>
     );
 }

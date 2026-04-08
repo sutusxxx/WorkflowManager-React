@@ -1,4 +1,4 @@
-import LoginForm from "~/components/forms/LoginForm";
+import LoginForm from "~/features/login/LoginForm";
 import type { Route } from "./+types/login";
 import { Box } from "@mui/material";
 import { commitSession, getSession } from "~/session.server";

@@ -1,11 +1,13 @@
-import { Stack, Typography } from "@mui/material";
+import { Link, Stack, Typography } from "@mui/material";
 import SortableList from "~/components/lists/SortableList";
 import { type Issue } from "~/interfaces/issue";
 import { useQuery } from "@tanstack/react-query";
-import { QUERY_KEY } from "~/constants/queries.constant";
+import { QUERY_KEY, QUERY_PARAM } from "~/constants/queries.constant";
 import { clientInstance } from "~/lib/api/client";
 import SortableListSkeleton from "~/components/lists/SortableListSkeleton";
 import { useMinDelay } from "~/hooks/useMinDelay";
+import { useSearchParams } from "react-router";
+import { memo } from "react";
 
 type IssueListResponse = {
     issues: Issue[],
@@ -14,6 +16,7 @@ type IssueListResponse = {
 function IssueListItem({ item }: {
     item: Issue,
 }) {
+    const [_, setSearchParams] = useSearchParams();
     return (
         <Stack
             direction="row"
@@ -21,15 +24,24 @@ function IssueListItem({ item }: {
                 justifyContent: "space-between",
             }}
         >
-            <Typography variant="body2">{item.key} {item.title}</Typography>
+            <Typography
+                variant="body2"
+                component={Link}
+                onClick={() => setSearchParams([[QUERY_PARAM.SELECTED_ISSUE, item.key]])}
+                sx={{
+                    cursor: "pointer",
+                }}
+            >
+                {item.key} {item.title}
+            </Typography>
             <Typography variant="body2">{item.status}</Typography>
         </Stack>
     );
 }
 
-export default function IssueList({ projectKey }: {
+const IssueList = memo(({ projectKey }: {
     projectKey: string,
-}) {
+}) => {
     const { data, isLoading, isError } = useQuery<IssueListResponse>({
         queryKey: [QUERY_KEY.ISSUES, projectKey],
         queryFn: async () => {
@@ -55,4 +67,6 @@ export default function IssueList({ projectKey }: {
             )}
         />
     );
-}
+});
+
+export default IssueList;
