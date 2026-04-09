@@ -1,4 +1,4 @@
-import { Link, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import SortableList from "~/components/lists/SortableList";
 import { type Issue } from "~/interfaces/issue";
 import { useQuery } from "@tanstack/react-query";
@@ -6,8 +6,8 @@ import { QUERY_KEY, QUERY_PARAM } from "~/constants/queries.constant";
 import { clientInstance } from "~/lib/api/client";
 import SortableListSkeleton from "~/components/lists/SortableListSkeleton";
 import { useMinDelay } from "~/hooks/useMinDelay";
-import { useSearchParams } from "react-router";
 import { memo } from "react";
+import Link from "~/components/navigation/Link";
 
 type IssueListResponse = {
     issues: Issue[],
@@ -16,7 +16,6 @@ type IssueListResponse = {
 function IssueListItem({ item }: {
     item: Issue,
 }) {
-    const [_, setSearchParams] = useSearchParams();
     return (
         <Stack
             direction="row"
@@ -24,16 +23,12 @@ function IssueListItem({ item }: {
                 justifyContent: "space-between",
             }}
         >
-            <Typography
-                variant="body2"
-                component={Link}
-                onClick={() => setSearchParams([[QUERY_PARAM.SELECTED_ISSUE, item.key]])}
-                sx={{
-                    cursor: "pointer",
-                }}
-            >
-                {item.key} {item.title}
-            </Typography>
+            <Stack direction="row" spacing={1}>
+                <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${item.key}` }}>
+                    {item.key}
+                </Link>
+                <Typography variant="body2">{item.title}</Typography>
+            </Stack>
             <Typography variant="body2">{item.status}</Typography>
         </Stack>
     );

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { clientInstance } from "~/lib/api/client";
 import { QUERY_KEY } from "~/constants/queries.constant";
 import LoadingIndicator from "~/components/misc/LoadingIndicator";
-import { Link } from "react-router";
+import Link from "~/components/navigation/Link";
 
 type ProjectListResponse = {
     projects: Project[];
@@ -30,17 +30,17 @@ export default function ProjectList() {
             sx={{ marginLeft: 2 }}
         >
             {data.projects.map(project =>
-                <Typography 
-                component={Link} 
-                to={`/projects/${project.key}/board`} 
-                key={project.key} 
-                sx={{
-                    fontWeight: "bold",
-                    textDecoration: "none",
-                }}
+                <Link
+                    to={`/projects/${project.key}/board`}
+                    key={project.key}
+                    sx={{
+                        fontWeight: "bold",
+                        textDecoration: "none",
+                        color: "initial",
+                    }}
                 >
                     {project.key}
-                </Typography>
+                </Link>
             )}
         </Stack>
     );

@@ -1,4 +1,4 @@
-import { Box, ClickAwayListener, Dialog, Stack, Tab, Tabs } from "@mui/material";
+import { Box, ClickAwayListener, Dialog, DialogContent, Stack, Tab, Tabs } from "@mui/material";
 import { Outlet, redirect, useLocation, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/project";
 import { getSession } from "~/session.server";
@@ -58,8 +58,10 @@ export default function Project({ params }: Route.ComponentProps) {
             </Stack>
             {searchParams.has(QUERY_PARAM.SELECTED_ISSUE) &&
                 <ClickAwayListener onClickAway={handleIssueDialogClose}>
-                    <Dialog open onClose={handleIssueDialogClose}>
-                        <IssueForm issueKey={searchParams.get(QUERY_PARAM.SELECTED_ISSUE)!} />
+                    <Dialog open onClose={handleIssueDialogClose} fullWidth>
+                        <DialogContent>
+                            <IssueForm issueKey={searchParams.get(QUERY_PARAM.SELECTED_ISSUE)!} />
+                        </DialogContent>
                     </Dialog>
                 </ClickAwayListener>
             }

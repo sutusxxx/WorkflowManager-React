@@ -1,4 +1,4 @@
-import { Box, Drawer, IconButton, styled } from "@mui/material";
+import { Drawer, IconButton, styled } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import type { ReactNode } from "react";
 
