@@ -1,27 +1,27 @@
 import { Stack, Typography } from "@mui/material";
 import type { Project } from "../../interfaces/project";
-import { useQuery } from "@tanstack/react-query";
-import { clientInstance } from "~/lib/api/client";
-import { QUERY_KEY } from "~/constants/queries.constant";
 import LoadingIndicator from "~/components/misc/LoadingIndicator";
 import Link from "~/components/navigation/Link";
+import { useQuery } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 type ProjectListResponse = {
     projects: Project[];
 };
 
 export default function ProjectList() {
-    const { data, isLoading, isError } = useQuery<ProjectListResponse>({
-        queryKey: [QUERY_KEY.PROJECTS],
-        queryFn: async () => {
-            const response = await clientInstance.get("/projects");
+    const { data, loading, error } = useQuery<ProjectListResponse>(gql`
+        query GetProjects {
+            projects {
+                id
+                key
+                name
+            }
+        }
+    `);
 
-            return { projects: response.data ?? [] };
-        },
-    });
-
-    if (isLoading) return <LoadingIndicator />;
-    if (isError) return <Typography variant="body2" color="error">Cannot fetch projects</Typography>
+    if (loading) return <LoadingIndicator />;
+    if (error) return <Typography variant="body2" color="error">Cannot fetch projects</Typography>
     if (!data?.projects.length) return <Typography variant="body2">Not Found</Typography>
 
     return (

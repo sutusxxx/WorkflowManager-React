@@ -1,18 +1,18 @@
 import { Box, Button, Chip, Divider, Grid, Paper, Skeleton, Stack, TextField, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query"
 import MetaChip from "~/components/misc/MetaChip";
-import { QUERY_KEY, QUERY_PARAM } from "~/constants/queries.constant"
+import { QUERY_PARAM } from "~/constants/queries.constant"
 import { useMinDelay } from "~/hooks/useMinDelay";
 import type { IssueDetail } from "~/interfaces/issue-detail";
-import { clientInstance } from "~/lib/api/client";
 import { format } from "date-fns";
 import InfoBox from "~/components/misc/InfoBox";
 import EditIcon from "@mui/icons-material/Edit";
 import Link from "~/components/navigation/Link";
 import { memo } from "react";
+import { useQuery } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 type IssueDetailResponse = {
-    issue: IssueDetail;
+    issueByKey: IssueDetail;
 };
 
 function IssueFormSkeleton() {
@@ -42,22 +42,48 @@ function IssueFormSkeleton() {
 const IssueForm = memo(({ issueKey }: {
     issueKey: string;
 }) => {
-    const { data, isLoading, isError } = useQuery<IssueDetailResponse>({
-        queryKey: [QUERY_KEY.ISSUES, issueKey],
-        queryFn: async () => {
-            const response = await clientInstance.get(`/issues/${issueKey}`);
-
-            return { issue: response.data };
+    const { data, loading, error } = useQuery<IssueDetailResponse>(gql`
+         query GetIssueDetail($issueKey: String!) {
+            issueByKey(key: $issueKey) {
+                id
+                title
+                key
+                description
+                priority
+                storyPoints
+                status
+                type
+                parent {
+                    key
+                }
+                children {
+                    id
+                    key
+                    title
+                }
+                project {
+                    key
+                    name
+                }
+                createdAt
+                updatedAt
+                createdBy {
+                    username
+                }
+                modifiedBy {
+                    username
+                }
+            }
         }
-    });
+        `, { variables: { issueKey } })
 
-    const showSkeleton = useMinDelay(isLoading);
+    const showSkeleton = useMinDelay(loading);
 
     if (showSkeleton) return <IssueFormSkeleton />;
-    if (isError) return <Typography variant="body2" color="error">Cannot fetch issue with key: {issueKey}</Typography>;
-    if (!data?.issue) return null;
+    if (error) return <Typography variant="body2" color="error">Cannot fetch issue</Typography>;
+    if (!data) return null;
 
-    const issue = data.issue;
+    const issue = data.issueByKey;
 
     return (
         <Stack spacing={2} sx={{ p: 3 }}>

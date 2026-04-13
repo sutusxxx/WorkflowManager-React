@@ -3,6 +3,7 @@ import type { Issue } from "./issue";
 import type { Priority } from "~/features/issues/Priority";
 
 export interface IssueDetail {
+    id: number;
     title: string;
     key: string;
     description: string;

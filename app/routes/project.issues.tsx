@@ -4,5 +4,5 @@ import type { Route } from "./+types/project.issues";
 export default function Page({
   params,
 }: Route.ComponentProps) {
-    return <IssueList projectKey={params.projectKey} />;
+    return <IssueList projectId={-1} />;
 }

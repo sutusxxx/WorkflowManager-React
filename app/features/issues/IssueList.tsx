@@ -1,13 +1,13 @@
 import { Stack, Typography } from "@mui/material";
 import SortableList from "~/components/lists/SortableList";
 import { type Issue } from "~/interfaces/issue";
-import { useQuery } from "@tanstack/react-query";
-import { QUERY_KEY, QUERY_PARAM } from "~/constants/queries.constant";
-import { clientInstance } from "~/lib/api/client";
+import { QUERY_PARAM } from "~/constants/queries.constant";
 import SortableListSkeleton from "~/components/lists/SortableListSkeleton";
 import { useMinDelay } from "~/hooks/useMinDelay";
 import { memo } from "react";
 import Link from "~/components/navigation/Link";
+import { useQuery } from "@apollo/client/react";
+import { gql } from "@apollo/client";
 
 type IssueListResponse = {
     issues: Issue[],
@@ -34,22 +34,23 @@ function IssueListItem({ item }: {
     );
 }
 
-const IssueList = memo(({ projectKey }: {
-    projectKey: string,
+const IssueList = memo(({ projectId }: {
+    projectId: number,
 }) => {
-    const { data, isLoading, isError } = useQuery<IssueListResponse>({
-        queryKey: [QUERY_KEY.ISSUES, projectKey],
-        queryFn: async () => {
-            const response = await clientInstance.get(`/projects/${projectKey}/issues`);
+    const { data, loading, error } = useQuery<IssueListResponse>(gql`
+        query GetIssues($projectId: ID!) {
+            issues(projectId: $projectId) {
+                id
+                key
+                title
+            }
+        }
+        `, { variables: { projectId: 1 } });
 
-            return { issues: response.data ?? [] };
-        },
-    });
-
-    const showSkeleton = useMinDelay(isLoading);
+    const showSkeleton = useMinDelay(loading);
 
     if (showSkeleton) return <SortableListSkeleton />;
-    if (isError) return <Typography variant="body2" color="error">Cannot fetch issues</Typography>;
+    if (error) return <Typography variant="body2" color="error">Cannot fetch issues</Typography>;
     if (!data?.issues.length) return <Typography variant="body2">Not Found</Typography>;
 
     return (

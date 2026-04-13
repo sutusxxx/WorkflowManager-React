@@ -1,6 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { clientInstance } from "~/lib/api/client";
 
 export type useAuthenticateHookResult = {
   fields: {
@@ -21,20 +21,11 @@ export function useAuthenticate(): useAuthenticateHookResult {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const mutation = useMutation({
-    mutationFn: (credentials: { username: string; password: string }) => {
-      return fetch("/session/login", {
-        method: "POST",
-        body: JSON.stringify(credentials),
-      });
-    },
-    onSuccess: (response) => {
-      navigate("/dashboard");
-    },
-    onError: (error) => {
-      setError("Login failed. Please check your credentials and try again.");
-    },
-  });
+  const authenticate = async () => {
+    await clientInstance.post("/auth/authenticate", { username, password })
+      .then(() => navigate("/dashboard"))
+      .catch(() => setError("Login failed. Please check your credentials and try again."));
+  };
 
   return {
     fields: {
@@ -45,7 +36,7 @@ export function useAuthenticate(): useAuthenticateHookResult {
       username: setUsername,
       password: setPassword,
     },
-    authenticate: () => mutation.mutate({ username, password }),
+    authenticate,
     error,
   };
 }

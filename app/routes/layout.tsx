@@ -14,14 +14,14 @@ import Sidebar from "~/components/misc/Sidebar";
 import { useState } from "react";
 import ProjectList from "~/features/projects/ProjectList";
 import type { Route } from "./+types/layout";
-import { getSession } from "~/session.server";
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "~/constants/components.constant";
 import Header from "~/components/misc/Header";
+import { serverInstance } from "~/lib/api/server";
 
-export async function loader({ request }: Route.LoaderArgs) {
-    const session = await getSession(request.headers.get("Cookie"));
+export async function loader() {
+    const session = await serverInstance.get("/auth/me")
 
-    return { user: session.get("user") };
+    return { user: session };
 }
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{

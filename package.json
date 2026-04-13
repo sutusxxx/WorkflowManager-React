@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@apollo/client": "^4.1.7",
     "@dnd-kit/react": "^0.3.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -20,10 +21,12 @@
     "@tanstack/react-query": "^5.95.2",
     "axios": "^1.14.0",
     "date-fns": "^4.1.0",
+    "graphql": "^16.13.2",
     "isbot": "^5.1.36",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router": "7.13.2"
+    "react-router": "7.13.2",
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@react-router/dev": "7.13.2",

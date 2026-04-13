@@ -1,7 +1,6 @@
 import { Box, ClickAwayListener, Dialog, DialogContent, Stack, Tab, Tabs } from "@mui/material";
-import { Outlet, redirect, useLocation, useNavigate, useSearchParams } from "react-router";
+import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/project";
-import { getSession } from "~/session.server";
 import Container from "~/components/layouts/Container";
 import IssueForm from "~/features/issues/IssueForm";
 import { QUERY_PARAM } from "~/constants/queries.constant";
@@ -11,16 +10,6 @@ const PROJECT_TABS = [
     { title: "Board", path: "board" },
     { title: "Issues", path: "issues" },
 ];
-
-export async function loader({ request }: Route.LoaderArgs) {
-    const session = await getSession(request.headers.get("Cookie"));
-
-    if (!session.has("user")) {
-        return redirect("/login")
-    }
-
-    return { user: session.get("user") };
-}
 
 export default function Project({ params }: Route.ComponentProps) {
     const navigate = useNavigate();
