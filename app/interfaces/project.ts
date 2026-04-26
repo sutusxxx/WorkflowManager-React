@@ -1,8 +1,11 @@
+import type { Issue } from "./issue";
+
 export interface Project {
-    id: number;
+    id: string;
     key: string;
     name: string;
     description: string;
     createdAt: Date;
     updatedAt: Date;
+    issues: Issue[];
 }

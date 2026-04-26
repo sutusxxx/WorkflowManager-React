@@ -3,22 +3,14 @@ import type { Project } from "../../interfaces/project";
 import LoadingIndicator from "~/components/misc/LoadingIndicator";
 import Link from "~/components/navigation/Link";
 import { useQuery } from "@apollo/client/react";
-import { gql } from "@apollo/client";
+import { GET_PROJECTS } from "~/lib/query/graphql";
 
 type ProjectListResponse = {
     projects: Project[];
 };
 
 export default function ProjectList() {
-    const { data, loading, error } = useQuery<ProjectListResponse>(gql`
-        query GetProjects {
-            projects {
-                id
-                key
-                name
-            }
-        }
-    `);
+    const { data, loading, error } = useQuery<ProjectListResponse>(GET_PROJECTS);
 
     if (loading) return <LoadingIndicator />;
     if (error) return <Typography variant="body2" color="error">Cannot fetch projects</Typography>
@@ -31,7 +23,7 @@ export default function ProjectList() {
         >
             {data.projects.map(project =>
                 <Link
-                    to={`/projects/${project.key}/board`}
+                    to={`/projects/${project.id}/board`}
                     key={project.key}
                     sx={{
                         fontWeight: "bold",

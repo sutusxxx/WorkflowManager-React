@@ -9,7 +9,7 @@ export default [
         route("dashboard", "routes/dashboard.tsx"),
         route("settings", "routes/settings.tsx"),
 
-        route("projects/:projectKey", "routes/project.tsx", [
+        route("projects/:projectId", "routes/project.tsx", [
             route("summary", "routes/project.summary.tsx"),
             route("board", "routes/project.board.tsx"),
             route("issues", "routes/project.issues.tsx"),

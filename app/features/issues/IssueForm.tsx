@@ -2,18 +2,14 @@ import { Box, Button, Chip, Divider, Grid, Paper, Skeleton, Stack, TextField, Ty
 import MetaChip from "~/components/misc/MetaChip";
 import { QUERY_PARAM } from "~/constants/queries.constant"
 import { useMinDelay } from "~/hooks/useMinDelay";
-import type { IssueDetail } from "~/interfaces/issue-detail";
 import { format } from "date-fns";
 import InfoBox from "~/components/misc/InfoBox";
 import EditIcon from "@mui/icons-material/Edit";
 import Link from "~/components/navigation/Link";
 import { memo } from "react";
 import { useQuery } from "@apollo/client/react";
-import { gql } from "@apollo/client";
-
-type IssueDetailResponse = {
-    issueByKey: IssueDetail;
-};
+import { GET_ISSUE_DETAIL } from "~/lib/query/graphql";
+import type { IssueDetailResponse } from "~/interfaces/issue-detail.response";
 
 function IssueFormSkeleton() {
     return (
@@ -42,40 +38,7 @@ function IssueFormSkeleton() {
 const IssueForm = memo(({ issueKey }: {
     issueKey: string;
 }) => {
-    const { data, loading, error } = useQuery<IssueDetailResponse>(gql`
-         query GetIssueDetail($issueKey: String!) {
-            issueByKey(key: $issueKey) {
-                id
-                title
-                key
-                description
-                priority
-                storyPoints
-                status
-                type
-                parent {
-                    key
-                }
-                children {
-                    id
-                    key
-                    title
-                }
-                project {
-                    key
-                    name
-                }
-                createdAt
-                updatedAt
-                createdBy {
-                    username
-                }
-                modifiedBy {
-                    username
-                }
-            }
-        }
-        `, { variables: { issueKey } })
+    const { data, loading, error } = useQuery<IssueDetailResponse>(GET_ISSUE_DETAIL, { variables: { issueKey } });
 
     const showSkeleton = useMinDelay(loading);
 
@@ -137,7 +100,7 @@ const IssueForm = memo(({ issueKey }: {
                 <Grid>
                     <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
                         <InfoBox label="Status">
-                            <Chip label={issue.status} color="primary" size="small" />
+                            <Chip label={issue.status.name} color="primary" size="small" />
                         </InfoBox>
                         <InfoBox label="Created at">
                             <Typography variant="body2">
@@ -174,7 +137,7 @@ const IssueForm = memo(({ issueKey }: {
                     </Paper>
                 </Stack>
             }
-            {issue.subIssues?.length > 0 &&
+            {issue.children?.length > 0 &&
                 <>
                     <Stack>
                         <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
@@ -182,7 +145,7 @@ const IssueForm = memo(({ issueKey }: {
                                 Sub-issues
                             </Typography>
                             <Stack spacing={0.5}>
-                                {issue.subIssues.map((sub) => (
+                                {issue.children.map((sub) => (
                                     <Stack key={sub.key} direction="row" alignItems="center" gap={1} sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}>
                                         <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "success.main", flexShrink: 0 }} />
                                         <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${sub.key}` }}>{sub.key}</Link>

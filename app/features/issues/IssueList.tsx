@@ -7,10 +7,12 @@ import { useMinDelay } from "~/hooks/useMinDelay";
 import { memo } from "react";
 import Link from "~/components/navigation/Link";
 import { useQuery } from "@apollo/client/react";
-import { gql } from "@apollo/client";
+import { GET_ISSUE_LIST } from "~/lib/query/graphql";
 
-type IssueListResponse = {
-    issues: Issue[],
+type GetIssuesResponse = {
+    projectById: {
+        issues: Issue[],
+    }
 };
 
 function IssueListItem({ item }: {
@@ -35,27 +37,19 @@ function IssueListItem({ item }: {
 }
 
 const IssueList = memo(({ projectId }: {
-    projectId: number,
+    projectId: string,
 }) => {
-    const { data, loading, error } = useQuery<IssueListResponse>(gql`
-        query GetIssues($projectId: ID!) {
-            issues(projectId: $projectId) {
-                id
-                key
-                title
-            }
-        }
-        `, { variables: { projectId: 1 } });
+    const { data, loading, error } = useQuery<GetIssuesResponse>(GET_ISSUE_LIST, { variables: { projectId } });
 
     const showSkeleton = useMinDelay(loading);
 
     if (showSkeleton) return <SortableListSkeleton />;
     if (error) return <Typography variant="body2" color="error">Cannot fetch issues</Typography>;
-    if (!data?.issues.length) return <Typography variant="body2">Not Found</Typography>;
+    if (!data?.projectById.issues.length) return <Typography variant="body2">Not Found</Typography>;
 
     return (
         <SortableList
-            items={data.issues}
+            items={data.projectById.issues}
             onSort={(sorted) => { }}
             getId={(item) => item.key}
             renderComponent={(item) => (

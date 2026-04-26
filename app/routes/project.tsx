@@ -15,7 +15,7 @@ export default function Project({ params }: Route.ComponentProps) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
-    const currentTab = PROJECT_TABS.findIndex(tab => pathname.startsWith(`/projects/${params.projectKey}/${tab.path}`));
+    const currentTab = PROJECT_TABS.findIndex(tab => pathname.startsWith(`/projects/${params.projectId}/${tab.path}`));
 
     const handleIssueDialogClose = () => setSearchParams(prev => {
         prev.delete(QUERY_PARAM.SELECTED_ISSUE);
