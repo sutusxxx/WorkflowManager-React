@@ -13,7 +13,7 @@ export interface IssueDetail {
     dueDate: Date;
     status: Status;
     projectKey: string;
-    parentKey: string;
+    parent: Issue;
     type: IssueType;
     children: Issue[];
     createdAt: Date;

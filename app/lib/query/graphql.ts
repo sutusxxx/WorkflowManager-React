@@ -6,6 +6,10 @@ export const GET_PROJECTS = gql`
             id
             key
             name
+            statuses {
+                id
+                name
+            }
         }
     }
 `;
@@ -15,6 +19,10 @@ export const GET_ISSUE_LIST = gql`
         projectById(id: $projectId) {
             id
             key
+            statuses {
+                id
+                name
+            }
             issues {
                 id
                 key

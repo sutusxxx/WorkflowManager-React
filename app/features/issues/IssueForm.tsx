@@ -54,9 +54,9 @@ const IssueForm = memo(({ issueKey }: {
                 <Typography variant="caption" color="text.disabled">
                     Issues /
                 </Typography>
-                {issue.parentKey &&
-                    <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${issue.parentKey}` }}>
-                        {issue.parentKey}
+                {issue.parent &&
+                    <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${issue.parent.key}` }}>
+                        {issue.parent.key}
                     </Link>}
                 <Chip label={issue.key} color="primary" size="small" />
             </Stack>

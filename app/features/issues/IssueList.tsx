@@ -8,9 +8,13 @@ import { memo } from "react";
 import Link from "~/components/navigation/Link";
 import { useQuery } from "@apollo/client/react";
 import { GET_ISSUE_LIST } from "~/lib/query/graphql";
+import type { Status } from "~/interfaces/status";
 
 type GetIssuesResponse = {
     projectById: {
+        id: string;
+        key: string;
+        statuses: Status[];
         issues: Issue[],
     }
 };
