@@ -119,18 +119,18 @@ const IssueForm = memo(({ issueKey }: {
                 </Grid>
             </Grid>
             <Divider />
-            {issue.linkedIssue?.size > 0 &&
+            {issue.linkedIssues?.length > 0 &&
                 <Stack spacing={2}>
                     <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
                         <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}>
                             Linked issues
                         </Typography>
                         <Stack spacing={0.5}>
-                            {Array.from(issue.linkedIssue.entries()).map(([key, relation]) => (
-                                <Stack key={key} direction="row" alignItems="center" gap={1} sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}>
+                            {issue.linkedIssues.map((linkedIssue) => (
+                                <Stack key={linkedIssue.targetIssue.key} direction="row" alignItems="center" gap={1} sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}>
                                     <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "primary.main", flexShrink: 0 }} />
-                                    <Typography variant="caption" color="text.secondary">{relation}</Typography>
-                                    <Typography variant="body2">{key}</Typography>
+                                    <Typography variant="caption" color="text.secondary">{linkedIssue.linkType}</Typography>
+                                    <Typography variant="body2">{linkedIssue.targetIssue.key}</Typography>
                                 </Stack>
                             ))}
                         </Stack>

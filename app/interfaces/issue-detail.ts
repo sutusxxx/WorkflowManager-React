@@ -2,6 +2,7 @@ import type { IssueType } from "~/features/issues/IssueType";
 import type { Issue } from "./issue";
 import type { Priority } from "~/features/issues/Priority";
 import type { Status } from "./status";
+import type { IssueLink } from "./issue-link";
 
 export interface IssueDetail {
     id: number;
@@ -18,6 +19,6 @@ export interface IssueDetail {
     createdAt: Date;
     updatedAt: Date;
     comments: any;
-    linkedIssue: Map<string, string>;
+    linkedIssues: IssueLink[];
     priority: Priority;
 }

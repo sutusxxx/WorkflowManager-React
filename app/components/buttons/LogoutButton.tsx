@@ -5,7 +5,7 @@ export default function LogoutButton() {
     const fetcher = useFetcher();
 
     return (
-        <fetcher.Form method="GET" action="/session/logout">
+        <fetcher.Form method="GET" action="/logout">
             <Button type="submit">
                 <Typography color="white">{fetcher.state !== "idle" ? "Logging out..." : "Logout"}</Typography>    
             </Button> 
