@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Divider, Grid, Paper, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Grid, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import MetaChip from "~/components/misc/MetaChip";
 import { QUERY_PARAM } from "~/constants/queries.constant"
 import { useMinDelay } from "~/hooks/useMinDelay";
@@ -7,9 +7,9 @@ import InfoBox from "~/components/misc/InfoBox";
 import EditIcon from "@mui/icons-material/Edit";
 import Link from "~/components/navigation/Link";
 import { memo } from "react";
-import { useQuery } from "@apollo/client/react";
-import { GET_ISSUE_DETAIL } from "~/lib/query/graphql";
-import type { IssueDetailResponse } from "~/interfaces/issue-detail.response";
+import Select from "~/components/inputs/Select";
+import { useIssueDetail } from "~/hooks/useIssueDetail";
+import { SelectableTextField } from "~/components/inputs/SelectableTextField";
 
 function IssueFormSkeleton() {
     return (
@@ -19,34 +19,45 @@ function IssueFormSkeleton() {
             </Stack>
             <Skeleton width={280} height={60} />
             <Divider />
-            <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1.5}>
-                <Skeleton width={200} height={40} />
-                <Skeleton width={100} height={40} />
-            </Stack>
+            <Grid container spacing={2}>
+                <Grid size={8}>
+                    <Skeleton height={40} />
+                </Grid>
+                <Grid size={4}>
+                    <Skeleton height={40} />
+                </Grid>
+            </Grid>
             <Divider />
             <Grid container spacing={2}>
-                <Skeleton variant="rectangular" width={180} height={160} />
-                <Skeleton variant="rectangular" width={180} height={160} />
+                <Grid size={6}>
+                    <Skeleton variant="rectangular" height={160} />
+                </Grid>
+                <Grid size={6}>
+                    <Skeleton variant="rectangular" height={160} />
+                </Grid>
             </Grid>
             <Divider />
             <Skeleton variant="rectangular" height={100} />
             <Skeleton variant="rectangular" height={50} />
         </Stack>
-    )
+    );
 }
 
 const IssueForm = memo(({ issueKey }: {
     issueKey: string;
 }) => {
-    const { data, loading, error } = useQuery<IssueDetailResponse>(GET_ISSUE_DETAIL, { variables: { issueKey } });
+    const {
+        issue,
+        loading,
+        error,
+        handleUpdate,
+        handleStatusChange,
+    } = useIssueDetail(issueKey);
 
     const showSkeleton = useMinDelay(loading);
-
     if (showSkeleton) return <IssueFormSkeleton />;
     if (error) return <Typography variant="body2" color="error">Cannot fetch issue</Typography>;
-    if (!data) return null;
-
-    const issue = data.issueByKey;
+    if (!issue) return null;
 
     return (
         <Stack spacing={2} sx={{ p: 3 }}>
@@ -55,18 +66,16 @@ const IssueForm = memo(({ issueKey }: {
                     Issues /
                 </Typography>
                 {issue.parent &&
-                    <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${issue.parent.key}` }}>
-                        {issue.parent.key}
-                    </Link>}
+                    <>
+                        <Typography component={Link} to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${issue.parent.key}` }}>
+                            {issue.parent.key}
+                        </Typography>
+                        <Typography variant="caption" color="text.disabled">/</Typography>
+                    </>
+                }
                 <Chip label={issue.key} color="primary" size="small" />
             </Stack>
-            <TextField
-                fullWidth
-                variant="standard"
-                defaultValue={issue.title}
-                onBlur={(e) => null}
-                InputProps={{ disableUnderline: true, sx: { fontSize: 20, fontWeight: 500 } }}
-            />
+            <SelectableTextField value={issue.title} onBlur={(value) => handleUpdate({ title: value.trim() })} />
             <Divider />
             <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1.5}>
                 <Stack direction="row" alignItems="center" gap={2} flexWrap="wrap">
@@ -85,23 +94,37 @@ const IssueForm = memo(({ issueKey }: {
             </Stack>
             <Divider />
             <Grid container spacing={2}>
-                <Grid>
+                <Grid size={7}>
                     <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>
                         Description
                     </Typography>
-                    <TextField
-                        fullWidth
-                        multiline
-                        minRows={6}
-                        defaultValue={issue.description}
-                        onBlur={(e) => null}
-                    />
+                    <Stack
+                        sx={{
+                            height: "100%",
+                            justifyContent: "space-between",
+                            paddingBottom: 2,
+                        }}
+                    >
+                        <SelectableTextField
+                            value={issue.description}
+                            onBlur={(value) => handleUpdate({ description: value.trim() })}
+                            multiline
+                            minRows={6}
+                            maxRows={16}
+                        />
+                    </Stack>
                 </Grid>
-                <Grid>
+                <Grid size={5}>
                     <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
-                        <InfoBox label="Status">
-                            <Chip label={issue.status.name} color="primary" size="small" />
-                        </InfoBox>
+                        <Select
+                            label="Status"
+                            value={issue.status.id}
+                            onChange={handleStatusChange}
+                            options={issue.project.statuses.map(status => ({ label: status.name, value: status.id }))}
+                            sx={{
+                                width: 150,
+                            }}
+                        />
                         <InfoBox label="Created at">
                             <Typography variant="body2">
                                 {format(issue.createdAt, "MMM d, yyyy · HH:mm")}
@@ -128,7 +151,6 @@ const IssueForm = memo(({ issueKey }: {
                         <Stack spacing={0.5}>
                             {issue.linkedIssues.map((linkedIssue) => (
                                 <Stack key={linkedIssue.targetIssue.key} direction="row" alignItems="center" gap={1} sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}>
-                                    <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "primary.main", flexShrink: 0 }} />
                                     <Typography variant="caption" color="text.secondary">{linkedIssue.linkType}</Typography>
                                     <Typography variant="body2">{linkedIssue.targetIssue.key}</Typography>
                                 </Stack>
@@ -147,7 +169,6 @@ const IssueForm = memo(({ issueKey }: {
                             <Stack spacing={0.5}>
                                 {issue.children.map((sub) => (
                                     <Stack key={sub.key} direction="row" alignItems="center" gap={1} sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}>
-                                        <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "success.main", flexShrink: 0 }} />
                                         <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${sub.key}` }}>{sub.key}</Link>
                                         <Typography variant="body2">{sub.title}</Typography>
                                     </Stack>

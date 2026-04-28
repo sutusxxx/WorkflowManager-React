@@ -59,6 +59,14 @@ export const GET_ISSUE_DETAIL = gql`
                 name
             }
         }
+        project {
+            id
+            key
+            statuses {
+                id
+                name
+            }
+        }
         createdAt
         updatedAt
         createdBy {
@@ -69,6 +77,18 @@ export const GET_ISSUE_DETAIL = gql`
         }
     }
 }
+`;
+
+export const STATUS_TRANSITION = gql`
+    mutation StatusTransition($issueId: ID!, $input: TransitionIssueInput!) {
+        changeStatus(issueId: $issueId, input: $input) {
+            id
+            status {
+                id
+                name
+            }
+        }
+    }
 `;
 
 export const UPDATE_ISSUE = gql`

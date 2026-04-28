@@ -3,6 +3,7 @@ import type { Issue } from "./issue";
 import type { Priority } from "~/features/issues/Priority";
 import type { Status } from "./status";
 import type { IssueLink } from "./issue-link";
+import type { Project } from "./project";
 
 export interface IssueDetail {
     id: number;
@@ -12,7 +13,7 @@ export interface IssueDetail {
     storyPoints: number;
     dueDate: Date;
     status: Status;
-    projectKey: string;
+    project: Project;
     parent: Issue;
     type: IssueType;
     children: Issue[];

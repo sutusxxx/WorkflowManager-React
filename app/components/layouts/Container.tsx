@@ -6,7 +6,7 @@ export default function Container({ children }: { children: ReactNode }) {
     return (
         <MuiContainer
             component={Paper}
-            elevation={3}
+            variant="outlined"
             maxWidth="lg"
             sx={{
                 borderRadius: "15px",
