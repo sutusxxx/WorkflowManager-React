@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "~/constants/components.constant";
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "../../constants/components.constant";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     open?: boolean;

@@ -1,17 +1,17 @@
 import { Stack, Typography } from "@mui/material";
-import SortableList from "~/components/lists/SortableList";
-import { type Issue } from "~/interfaces/issue";
-import { QUERY_PARAM } from "~/constants/queries.constant";
-import SortableListSkeleton from "~/components/lists/SortableListSkeleton";
-import { useMinDelay } from "~/hooks/useMinDelay";
+import { type Issue } from "../../interfaces/issue";
+import { useMinDelay } from "../../hooks/useMinDelay";
 import { memo } from "react";
-import Link from "~/components/navigation/Link";
 import { useQuery } from "@apollo/client/react";
 import { GET_ISSUE_LIST } from "~/lib/query/graphql";
-import type { Status } from "~/interfaces/status";
-import { Priority } from "./Priority";
+import type { Status } from "../../interfaces/status";
+
 import PriorityIcon from "./PriorityIcon";
 import IssueTypeIcon from "./IssueTypeIcon";
+import SortableList from "../../components/lists/SortableList";
+import SortableListSkeleton from "../../components/lists/SortableListSkeleton";
+import { QUERY_PARAM } from "../../constants/queries.constant";
+import Link from "../../components/navigation/Link";
 
 type GetIssuesResponse = {
     projectById: {

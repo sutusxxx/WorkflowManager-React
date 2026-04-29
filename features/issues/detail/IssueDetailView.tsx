@@ -1,16 +1,15 @@
 import { Box, Button, Chip, Divider, Grid, IconButton, Paper, Skeleton, Stack, Typography } from "@mui/material";
-import MetaChip from "~/components/misc/MetaChip";
-import { QUERY_PARAM } from "~/constants/queries.constant"
-import { useMinDelay } from "~/hooks/useMinDelay";
 import { format } from "date-fns";
-import InfoBox from "~/components/misc/InfoBox";
-import EditIcon from "@mui/icons-material/Edit";
-import Link from "~/components/navigation/Link";
 import { memo } from "react";
-import { useIssueDetail } from "~/hooks/useIssueDetail";
-import { SelectableTextField } from "~/components/inputs/SelectableTextField";
-import StatusSelect from "./StatusSelect";
+import { useIssueDetail } from "../../../hooks/useIssueDetail";
+import StatusSelect from "../StatusSelect";
 import AddIcon from "@mui/icons-material/Add";
+import { useSearchParams } from "react-router";
+import { SelectableTextField } from "../../../components/inputs/SelectableTextField";
+import InfoBox from "../../../components/misc/InfoBox";
+import MetaChip from "../../../components/misc/MetaChip";
+import { QUERY_PARAM } from "../../../constants/queries.constant";
+import Link from "../../../components/navigation/Link";
 
 export function IssueDetailSkeleton() {
     return (
@@ -53,8 +52,15 @@ const IssueDetailView = memo(({ issueKey }: {
         handleUpdate,
         handleStatusChange,
     } = useIssueDetail(issueKey);
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    if (error || !issue) return <Typography variant="body2" color="error">Cannot fetch issue</Typography>;
+    if (error || !issue) {
+        setSearchParams(prev => {
+            prev.delete(QUERY_PARAM.SELECTED_ISSUE);
+            return prev;
+        });
+        return null;
+    }
 
     return (
         <Stack spacing={2} sx={{ p: 3 }}>
@@ -88,7 +94,6 @@ const IssueDetailView = memo(({ issueKey }: {
                 <Button
                     variant="outlined"
                     size="small"
-                    startIcon={<EditIcon fontSize="small" />}
                 >
                     Edit
                 </Button>

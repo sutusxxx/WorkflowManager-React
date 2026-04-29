@@ -1,4 +1,4 @@
-import LoginForm from "~/features/login/LoginForm";
+import LoginForm from "../../features/login/LoginForm";
 import type { Route } from "./+types/login";
 import { Box } from "@mui/material";
 

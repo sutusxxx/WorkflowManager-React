@@ -1,10 +1,10 @@
 import { Box, ClickAwayListener, Dialog, DialogContent, Stack, Tab, Tabs } from "@mui/material";
 import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/project";
-import Container from "~/components/layouts/Container";
-import IssueDetailView, { IssueDetailSkeleton } from "~/features/issues/IssueDetailView";
-import { QUERY_PARAM } from "~/constants/queries.constant";
+import Container from "../../components/layouts/Container";
+import { QUERY_PARAM } from "../../constants/queries.constant";
 import { Suspense } from "react";
+import IssueDetailView, { IssueDetailSkeleton } from "../../features/issues/detail/IssueDetailView";
 
 const PROJECT_TABS = [
     { title: "Summary", path: "summary" },

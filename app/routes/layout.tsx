@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Outlet } from "react-router";
-import Sidebar from "~/components/misc/Sidebar";
+import Sidebar from "../../components/misc/Sidebar";
 import { useState } from "react";
-import ProjectList from "~/features/projects/ProjectList";
 import type { Route } from "./+types/layout";
-import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "~/constants/components.constant";
-import Header from "~/components/misc/Header";
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "../../constants/components.constant";
+import Header from "../../components/misc/Header";
 import { serverInstance } from "~/lib/api/server";
+import ProjectList from "../../features/projects/ProjectList";
 
 export async function loader() {
     const session = await serverInstance.get("/auth/me")

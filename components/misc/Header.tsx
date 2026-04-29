@@ -5,7 +5,7 @@ import {
     AppBar as MuiAppBar,
     type AppBarProps as MuiAppBarProps,
 } from "@mui/material";
-import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "~/constants/components.constant";
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "../../constants/components.constant";
 import LoginButton from "../buttons/LoginButton";
 import LogoutButton from "../buttons/LogoutButton";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";

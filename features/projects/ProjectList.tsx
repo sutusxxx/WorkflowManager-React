@@ -1,9 +1,9 @@
 import { Stack, Typography } from "@mui/material";
 import type { Project } from "../../interfaces/project";
-import LoadingIndicator from "~/components/misc/LoadingIndicator";
-import Link from "~/components/navigation/Link";
 import { useQuery } from "@apollo/client/react";
 import { GET_PROJECTS } from "~/lib/query/graphql";
+import LoadingIndicator from "../../components/misc/LoadingIndicator";
+import Link from "../../components/navigation/Link";
 
 type ProjectListResponse = {
     projects: Project[];

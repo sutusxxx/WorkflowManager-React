@@ -1,4 +1,4 @@
-import IssueList from "~/features/issues/IssueList";
+import IssueList from "../../features/issues/IssueList";
 import type { Route } from "./+types/project.issues";
 
 export default function Page({
