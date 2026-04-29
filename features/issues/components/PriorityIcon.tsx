@@ -6,7 +6,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import MenuIcon from '@mui/icons-material/Menu';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { Priority } from './Priority';
+import { Priority } from '../../../shared/enums/Priority';
 import type { OverridableComponent } from '@mui/material/OverridableComponent';
 import type { SvgIconTypeMap } from '@mui/material/SvgIcon';
 import { Tooltip } from '@mui/material';

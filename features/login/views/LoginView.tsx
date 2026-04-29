@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useAuthenticate } from "../../hooks/useAuthenticate";
+import { useAuthenticate } from "../hooks/useAuthenticate";
 
-export default function LoginForm() {
+export default function LoginView() {
     const {
         fields,
         onChange,

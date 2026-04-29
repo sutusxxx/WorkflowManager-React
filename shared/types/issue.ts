@@ -1,8 +1,8 @@
-import type { IssueType } from "~/features/issues/IssueType";
-import type { Priority } from "~/features/issues/Priority";
+import type { IssueType } from "../enums/IssueType";
+import type { Priority } from "../enums/Priority";
 import type { Status } from "./status";
 
-export interface Issue {
+export type Issue = {
     id: string;
     key: string;
     title: string;
@@ -10,4 +10,4 @@ export interface Issue {
     type: IssueType;
     status: Status;
     priority: Priority;
-}
+};

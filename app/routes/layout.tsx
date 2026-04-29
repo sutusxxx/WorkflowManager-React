@@ -13,10 +13,10 @@ import { Outlet } from "react-router";
 import Sidebar from "../../components/misc/Sidebar";
 import { useState } from "react";
 import type { Route } from "./+types/layout";
-import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "../../constants/components.constant";
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from "../../shared/constants/components.constant";
 import Header from "../../components/misc/Header";
 import { serverInstance } from "~/lib/api/server";
-import ProjectList from "../../features/projects/ProjectList";
+import ProjectListView from "../../features/projects/views/ProjectListView";
 
 export async function loader() {
     const session = await serverInstance.get("/auth/me")
@@ -82,7 +82,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
                                 <Typography fontWeight="bold">Projects</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <ProjectList />
+                                <ProjectListView />
                             </AccordionDetails>
                         </Accordion>
                     </ListItem>

@@ -1,4 +1,4 @@
-import { IssueType } from "./IssueType";
+
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import BugReportIcon from '@mui/icons-material/BugReport';
@@ -6,6 +6,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Tooltip, type SvgIconTypeMap } from "@mui/material";
+import { IssueType } from '../../../shared/enums/IssueType';
 
 type PriorityComponent = {
     Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {

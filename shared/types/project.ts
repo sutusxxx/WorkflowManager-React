@@ -1,7 +1,7 @@
 import type { Issue } from "./issue";
 import type { Status } from "./status";
 
-export interface Project {
+export type Project = {
     id: string;
     key: string;
     name: string;
@@ -10,4 +10,4 @@ export interface Project {
     createdAt: Date;
     updatedAt: Date;
     issues: Issue[];
-}
+};

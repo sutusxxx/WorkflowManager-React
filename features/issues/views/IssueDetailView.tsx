@@ -1,15 +1,15 @@
 import { Box, Button, Chip, Divider, Grid, IconButton, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { memo } from "react";
-import { useIssueDetail } from "../../../hooks/useIssueDetail";
-import StatusSelect from "../StatusSelect";
+import StatusSelect from "../components/StatusSelect";
 import AddIcon from "@mui/icons-material/Add";
 import { useSearchParams } from "react-router";
 import { SelectableTextField } from "../../../components/inputs/SelectableTextField";
 import InfoBox from "../../../components/misc/InfoBox";
 import MetaChip from "../../../components/misc/MetaChip";
-import { QUERY_PARAM } from "../../../constants/queries.constant";
+import { QUERY_PARAM } from "../../../shared/constants/queries.constant";
 import Link from "../../../components/navigation/Link";
+import { useIssueDetail } from "../hooks/useIssueDetail";
 
 export function IssueDetailSkeleton() {
     return (

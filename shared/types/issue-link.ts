@@ -1,8 +1,8 @@
 import type { Issue } from "./issue";
-import type { LinkType } from "./link-type";
+import type { LinkType } from "../enums/link-type";
 
-export interface IssueLink {
+export type IssueLink = {
     linkType: LinkType;
     targetIssue: Issue;
     createdAt: Date;
-}
+};

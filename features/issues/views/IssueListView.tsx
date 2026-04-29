@@ -1,17 +1,16 @@
 import { Stack, Typography } from "@mui/material";
-import { type Issue } from "../../interfaces/issue";
-import { useMinDelay } from "../../hooks/useMinDelay";
+import { type Issue } from "../../../shared/types/issue";
 import { memo } from "react";
 import { useQuery } from "@apollo/client/react";
 import { GET_ISSUE_LIST } from "~/lib/query/graphql";
-import type { Status } from "../../interfaces/status";
-
-import PriorityIcon from "./PriorityIcon";
-import IssueTypeIcon from "./IssueTypeIcon";
-import SortableList from "../../components/lists/SortableList";
-import SortableListSkeleton from "../../components/lists/SortableListSkeleton";
-import { QUERY_PARAM } from "../../constants/queries.constant";
-import Link from "../../components/navigation/Link";
+import type { Status } from "../../../shared/types/status";
+import SortableList from "../../../components/lists/SortableList";
+import SortableListSkeleton from "../../../components/lists/SortableListSkeleton";
+import { QUERY_PARAM } from "../../../shared/constants/queries.constant";
+import Link from "../../../components/navigation/Link";
+import IssueTypeIcon from "../components/IssueTypeIcon";
+import PriorityIcon from "../components/PriorityIcon";
+import { useMinDelay } from "../../../shared/hooks/useMinDelay";
 
 type GetIssuesResponse = {
     projectById: {
@@ -43,7 +42,7 @@ function IssueListItem({ item }: {
     );
 }
 
-const IssueList = memo(({ projectId }: {
+const IssueListView = memo(({ projectId }: {
     projectId: string,
 }) => {
     const { data, loading, error } = useQuery<GetIssuesResponse>(GET_ISSUE_LIST, { variables: { projectId } });
@@ -66,4 +65,4 @@ const IssueList = memo(({ projectId }: {
     );
 });
 
-export default IssueList;
+export default IssueListView;

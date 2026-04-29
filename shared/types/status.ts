@@ -1,6 +1,6 @@
-export interface Status {
+export type Status = {
     id: string;
     name: string;
     color: string;
     allowedTransitionIds: string[];
-}
+};

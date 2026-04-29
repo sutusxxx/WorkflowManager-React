@@ -1,11 +1,11 @@
-import type { IssueType } from "~/features/issues/IssueType";
 import type { Issue } from "./issue";
-import type { Priority } from "~/features/issues/Priority";
 import type { Status } from "./status";
 import type { IssueLink } from "./issue-link";
 import type { Project } from "./project";
+import type { IssueType } from "../enums/IssueType";
+import type { Priority } from "../enums/Priority";
 
-export interface IssueDetail {
+export type IssueDetail = {
     id: number;
     title: string;
     key: string;
@@ -22,4 +22,4 @@ export interface IssueDetail {
     comments: any;
     linkedIssues: IssueLink[];
     priority: Priority;
-}
+};

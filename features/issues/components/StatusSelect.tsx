@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type { Status } from "../../interfaces/status";
-import Select from "../../components/inputs/Select";
+import type { Status } from "../../../shared/types/status";
+import Select from "../../../components/inputs/Select";
 
 type StatusSelectProps = {
     status: Status;

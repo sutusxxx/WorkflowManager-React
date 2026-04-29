@@ -1,15 +1,11 @@
 import { Stack, Typography } from "@mui/material";
-import type { Project } from "../../interfaces/project";
 import { useQuery } from "@apollo/client/react";
 import { GET_PROJECTS } from "~/lib/query/graphql";
-import LoadingIndicator from "../../components/misc/LoadingIndicator";
-import Link from "../../components/navigation/Link";
+import LoadingIndicator from "../../../components/misc/LoadingIndicator";
+import Link from "../../../components/navigation/Link";
+import type { ProjectListResponse } from "../types/project-list-response";
 
-type ProjectListResponse = {
-    projects: Project[];
-};
-
-export default function ProjectList() {
+export default function ProjectListView() {
     const { data, loading, error } = useQuery<ProjectListResponse>(GET_PROJECTS);
 
     if (loading) return <LoadingIndicator />;

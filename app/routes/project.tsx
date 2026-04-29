@@ -2,9 +2,9 @@ import { Box, ClickAwayListener, Dialog, DialogContent, Stack, Tab, Tabs } from 
 import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/project";
 import Container from "../../components/layouts/Container";
-import { QUERY_PARAM } from "../../constants/queries.constant";
+import { QUERY_PARAM } from "../../shared/constants/queries.constant";
 import { Suspense } from "react";
-import IssueDetailView, { IssueDetailSkeleton } from "../../features/issues/detail/IssueDetailView";
+import IssueDetailView, { IssueDetailSkeleton } from "../../features/issues/views/IssueDetailView";
 
 const PROJECT_TABS = [
     { title: "Summary", path: "summary" },
