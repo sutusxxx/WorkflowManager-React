@@ -5,12 +5,13 @@ import { useRef, useState } from "react";
 export type SelectableTextFieldProps = {
     value: string;
     onBlur?: (value: string) => void;
+    acceptOnEnter?: boolean;
     multiline?: boolean;
     minRows?: number;
     maxRows?: number;
 }
 
-export function SelectableTextField({ value, onBlur, multiline, minRows, maxRows }: SelectableTextFieldProps) {
+export function SelectableTextField({ value, onBlur, acceptOnEnter, multiline, minRows, maxRows }: SelectableTextFieldProps) {
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -33,7 +34,7 @@ export function SelectableTextField({ value, onBlur, multiline, minRows, maxRows
                 defaultValue={value} // uncontrolled
                 onBlur={(event) => handleBlur(event.target.value)}
                 onKeyDown={(e) => {
-                    if (e.key === "Enter") handleBlur(inputRef.current?.value!);
+                    if (e.key === "Enter" && acceptOnEnter) handleBlur(inputRef.current?.value!);
                 }}
                 autoFocus={isEditMode}
                 multiline={multiline}
@@ -41,5 +42,16 @@ export function SelectableTextField({ value, onBlur, multiline, minRows, maxRows
                 maxRows={maxRows}
             />
         )
-        : <Typography onClick={handleFieldSelect}>{value}</Typography>
+        : (
+            <Typography
+                onClick={handleFieldSelect}
+                sx={{
+                    height: minRows + "rem",
+                    whiteSpace: "pre-wrap",
+                    cursor: "text",
+                }}
+            >
+                {value}
+            </Typography>
+        )
 }

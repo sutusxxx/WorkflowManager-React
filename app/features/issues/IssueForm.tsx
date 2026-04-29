@@ -7,9 +7,9 @@ import InfoBox from "~/components/misc/InfoBox";
 import EditIcon from "@mui/icons-material/Edit";
 import Link from "~/components/navigation/Link";
 import { memo } from "react";
-import Select from "~/components/inputs/Select";
 import { useIssueDetail } from "~/hooks/useIssueDetail";
 import { SelectableTextField } from "~/components/inputs/SelectableTextField";
+import StatusSelect from "./StatusSelect";
 
 function IssueFormSkeleton() {
     return (
@@ -75,7 +75,11 @@ const IssueForm = memo(({ issueKey }: {
                 }
                 <Chip label={issue.key} color="primary" size="small" />
             </Stack>
-            <SelectableTextField value={issue.title} onBlur={(value) => handleUpdate({ title: value.trim() })} />
+            <SelectableTextField
+                value={issue.title}
+                onBlur={(value) => handleUpdate({ title: value.trim() })}
+                acceptOnEnter
+            />
             <Divider />
             <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1.5}>
                 <Stack direction="row" alignItems="center" gap={2} flexWrap="wrap">
@@ -98,33 +102,17 @@ const IssueForm = memo(({ issueKey }: {
                     <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>
                         Description
                     </Typography>
-                    <Stack
-                        sx={{
-                            height: "100%",
-                            justifyContent: "space-between",
-                            paddingBottom: 2,
-                        }}
-                    >
-                        <SelectableTextField
+                    <SelectableTextField
                             value={issue.description}
                             onBlur={(value) => handleUpdate({ description: value.trim() })}
                             multiline
                             minRows={6}
                             maxRows={16}
                         />
-                    </Stack>
                 </Grid>
                 <Grid size={5}>
                     <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
-                        <Select
-                            label="Status"
-                            value={issue.status.id}
-                            onChange={handleStatusChange}
-                            options={issue.project.statuses.map(status => ({ label: status.name, value: status.id }))}
-                            sx={{
-                                width: 150,
-                            }}
-                        />
+                        <StatusSelect status={issue.status} statuses={issue.project.statuses} onChange={handleStatusChange} />
                         <InfoBox label="Created at">
                             <Typography variant="body2">
                                 {format(issue.createdAt, "MMM d, yyyy · HH:mm")}

@@ -35,48 +35,50 @@ export const GET_ISSUE_LIST = gql`
 
 export const GET_ISSUE_DETAIL = gql`
     query GetIssueDetail($issueKey: String!) {
-    issueByKey(key: $issueKey) {
-        id
-        title
-        key
-        description
-        priority
-        storyPoints
-        type
-        status {
+        issueByKey(key: $issueKey) {
             id
-            name
-        }
-        parent {
-            key
-        }
-        children {
-            id
-            key
             title
+            key
+            description
+            priority
+            storyPoints
+            type
             status {
                 id
                 name
+                category
+                allowedTransitionIds
             }
-        }
-        project {
-            id
-            key
-            statuses {
+            parent {
+                key
+            }
+            children {
                 id
-                name
+                key
+                title
+                status {
+                    id
+                    name
+                }
             }
-        }
-        createdAt
-        updatedAt
-        createdBy {
-            username
-        }
-        modifiedBy {
-            username
+            project {
+                id
+                key
+                statuses {
+                    id
+                    name
+                }
+            }
+            createdAt
+            updatedAt
+            createdBy {
+                username
+            }
+            modifiedBy {
+                username
+            }
         }
     }
-}
 `;
 
 export const STATUS_TRANSITION = gql`
