@@ -13,7 +13,10 @@ export default function Link({ children, to, sx }: {
             variant="body2"
             to={to}
             viewTransition
-            sx={sx}
+            sx={{
+                textDecoration: "none",
+                ...sx,
+            }}
         >
             {children}
         </MuiLink>

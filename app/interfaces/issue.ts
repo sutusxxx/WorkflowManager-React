@@ -1,5 +1,6 @@
 import type { IssueType } from "~/features/issues/IssueType";
 import type { Priority } from "~/features/issues/Priority";
+import type { Status } from "./status";
 
 export interface Issue {
     id: string;
@@ -7,6 +8,6 @@ export interface Issue {
     title: string;
     storyPoints?: number;
     type: IssueType;
-    status: string;
-    priority?: Priority;
+    status: Status;
+    priority: Priority;
 }

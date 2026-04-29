@@ -26,8 +26,15 @@ export const GET_ISSUE_LIST = gql`
             issues {
                 id
                 key
+                type
                 title
-                description
+                priority
+                status {
+                    id
+                    name
+                    color
+                    category
+                }
             }
         }
     }
@@ -48,6 +55,7 @@ export const GET_ISSUE_DETAIL = gql`
                 name
                 category
                 allowedTransitionIds
+                color
             }
             parent {
                 key

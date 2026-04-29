@@ -9,6 +9,9 @@ import Link from "~/components/navigation/Link";
 import { useQuery } from "@apollo/client/react";
 import { GET_ISSUE_LIST } from "~/lib/query/graphql";
 import type { Status } from "~/interfaces/status";
+import { Priority } from "./Priority";
+import PriorityIcon from "./PriorityIcon";
+import IssueTypeIcon from "./IssueTypeIcon";
 
 type GetIssuesResponse = {
     projectById: {
@@ -29,13 +32,13 @@ function IssueListItem({ item }: {
                 justifyContent: "space-between",
             }}
         >
-            <Stack direction="row" spacing={1}>
-                <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${item.key}` }}>
-                    {item.key}
-                </Link>
-                <Typography variant="body2">{item.title}</Typography>
+            <Stack direction="row" alignItems="center">
+                <IssueTypeIcon issueType={item.type} />
+                <PriorityIcon priority={item.priority} />
+                <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${item.key}` }}>{item.key}</Link>
+                <Typography paddingLeft={0.5} variant="body2">{item.title}</Typography>
             </Stack>
-            <Typography variant="body2">{item.status}</Typography>
+            <Typography variant="caption">{item.status.name}</Typography>
         </Stack>
     );
 }

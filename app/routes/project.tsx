@@ -2,8 +2,9 @@ import { Box, ClickAwayListener, Dialog, DialogContent, Stack, Tab, Tabs } from 
 import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/project";
 import Container from "~/components/layouts/Container";
-import IssueForm from "~/features/issues/IssueForm";
+import IssueDetailView, { IssueDetailSkeleton } from "~/features/issues/IssueDetailView";
 import { QUERY_PARAM } from "~/constants/queries.constant";
+import { Suspense } from "react";
 
 const PROJECT_TABS = [
     { title: "Summary", path: "summary" },
@@ -49,7 +50,9 @@ export default function Project({ params }: Route.ComponentProps) {
                 <ClickAwayListener onClickAway={handleIssueDialogClose}>
                     <Dialog open onClose={handleIssueDialogClose} fullWidth>
                         <DialogContent>
-                            <IssueForm issueKey={searchParams.get(QUERY_PARAM.SELECTED_ISSUE)!} />
+                            <Suspense fallback={<IssueDetailSkeleton />}>
+                                <IssueDetailView issueKey={searchParams.get(QUERY_PARAM.SELECTED_ISSUE)!} />
+                            </Suspense>
                         </DialogContent>
                     </Dialog>
                 </ClickAwayListener>
