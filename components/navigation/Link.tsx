@@ -2,11 +2,13 @@ import { Link as MuiLink, type SxProps, type Theme } from "@mui/material";
 import type { ReactNode } from "react";
 import { Link as ReactRouterLink } from "react-router";
 
-export default function Link({ children, to, sx }: {
+type LinkProps = {
     children: ReactNode;
     to: string | { pathname?: string, search?: string, hash?: string};
     sx?: SxProps<Theme>;
-}) {
+}
+
+export default function Link({ children, to, sx }: LinkProps) {
     return (
         <MuiLink
             component={ReactRouterLink}

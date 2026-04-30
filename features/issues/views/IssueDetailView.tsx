@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import { memo } from "react";
 import StatusSelect from "../components/StatusSelect";
 import AddIcon from "@mui/icons-material/Add";
-import { useSearchParams } from "react-router";
 import { SelectableTextField } from "../../../components/inputs/SelectableTextField";
 import InfoBox from "../../../components/misc/InfoBox";
 import MetaChip from "../../../components/misc/MetaChip";
@@ -43,22 +42,19 @@ export function IssueDetailSkeleton() {
     );
 }
 
-const IssueDetailView = memo(({ issueKey }: {
+type IssueDetailViewProps = {
     issueKey: string;
-}) => {
+}
+
+const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
     const {
         issue,
         error,
         handleUpdate,
         handleStatusChange,
     } = useIssueDetail(issueKey);
-    const [searchParams, setSearchParams] = useSearchParams();
 
     if (error || !issue) {
-        setSearchParams(prev => {
-            prev.delete(QUERY_PARAM.SELECTED_ISSUE);
-            return prev;
-        });
         return null;
     }
 
