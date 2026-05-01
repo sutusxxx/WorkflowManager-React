@@ -1,10 +1,8 @@
-import { Box, ClickAwayListener, Dialog, DialogContent, Stack, Tab, Tabs } from "@mui/material";
-import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
-import type { Route } from "./+types/project";
+import { Box, Stack, Tab, Tabs } from "@mui/material";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import Container from "../../components/layouts/Container";
-import { QUERY_PARAM } from "../../shared/constants/queries.constant";
-import { Suspense } from "react";
-import IssueDetailView, { IssueDetailSkeleton } from "../../features/issues/views/IssueDetailView";
+import IssueDetailDialog from "../../features/issues/components/IssueDetailDialog";
+import type { Route } from "./+types/project";
 
 const PROJECT_TABS = [
     { title: "Summary", path: "summary" },
@@ -15,13 +13,8 @@ const PROJECT_TABS = [
 export default function Project({ params }: Route.ComponentProps) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const currentTab = PROJECT_TABS.findIndex(tab => pathname.startsWith(`/projects/${params.projectId}/${tab.path}`));
 
-    const handleIssueDialogClose = () => setSearchParams(prev => {
-        prev.delete(QUERY_PARAM.SELECTED_ISSUE);
-        return prev;
-    });
+    const currentTab = PROJECT_TABS.findIndex(tab => pathname.startsWith(`/projects/${params.projectId}/${tab.path}`));
 
     return (
         <>
@@ -46,17 +39,7 @@ export default function Project({ params }: Route.ComponentProps) {
                     <Outlet />
                 </Container>
             </Stack>
-            {searchParams.has(QUERY_PARAM.SELECTED_ISSUE) &&
-                <ClickAwayListener onClickAway={handleIssueDialogClose}>
-                    <Dialog open onClose={handleIssueDialogClose} fullWidth>
-                        <DialogContent>
-                            <Suspense fallback={<IssueDetailSkeleton />}>
-                                <IssueDetailView issueKey={searchParams.get(QUERY_PARAM.SELECTED_ISSUE)!} />
-                            </Suspense>
-                        </DialogContent>
-                    </Dialog>
-                </ClickAwayListener>
-            }
+            <IssueDetailDialog />
         </>
     )
 }
