@@ -6,11 +6,11 @@ import type { FieldError } from "react-hook-form";
 export type DateInputProps = {
     label: ReactNode;
     value: Date;
-    onChange?: (value: Date) => void;
+    onChange?: (value: Date | null) => void;
     error?: FieldError;
 }
 
-export default function DateInput({label, value, onChange, error}: DateInputProps) {
+export default function DateInput({ label, value, onChange, error }: DateInputProps) {
     return (
         <DatePicker
             label={label}
@@ -18,6 +18,7 @@ export default function DateInput({label, value, onChange, error}: DateInputProp
             onChange={onChange ? (value) => value && onChange(value.toDate()) : undefined}
             disabled={!onChange}
             slotProps={{
+                field: { clearable: true, onClear: () => onChange?.(null) },
                 textField: {
                     fullWidth: true,
                     variant: "standard",

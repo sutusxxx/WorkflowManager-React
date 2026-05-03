@@ -1,7 +1,7 @@
-import { useMutation, useQuery, useSuspenseQuery } from "@apollo/client/react";
-import type { IssueDetail } from "../../../shared/types/issue-detail";
-import type { IssueDetailResponse } from "../types/issue-detail.response";
+import { useMutation, useSuspenseQuery } from "@apollo/client/react";
 import { GET_ISSUE_DETAIL, STATUS_TRANSITION, UPDATE_ISSUE } from "~/lib/query/graphql";
+import type { IssueDetailResponse } from "../types/issue-detail.response";
+import type { UpdateIssue } from "../types/update-issue";
 
 export function useIssueDetail(issueKey: string) {
     const { data, error } = useSuspenseQuery<IssueDetailResponse>(GET_ISSUE_DETAIL, {
@@ -13,7 +13,7 @@ export function useIssueDetail(issueKey: string) {
 
     const [changeStatus] = useMutation(STATUS_TRANSITION);
 
-    const handleUpdate = (fields: Partial<IssueDetail>) => {
+    const handleUpdate = (fields: Partial<UpdateIssue>) => {
         if (data?.issueByKey?.id) {
             updateIssue({ variables: { id: data.issueByKey.id, input: fields } });
         }

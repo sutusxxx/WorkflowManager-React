@@ -184,6 +184,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                     <IssueForm
                         issue={issue}
                         onSave={(updateIssue) => {
+                            console.log(updateIssue);
                             handleUpdate(updateIssue);
                             setOpenForm(false);
                         }}
