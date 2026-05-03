@@ -10,7 +10,7 @@ import Link from "../../../components/navigation/Link";
 import IssueTypeIcon from "../components/IssueTypeIcon";
 import PriorityIcon from "../components/PriorityIcon";
 import { useMinDelay } from "../../../shared/hooks/useMinDelay";
-import type { IssueListResponse } from "../types/issue-list.response";
+import type { IssueListResponse } from "../../../app/lib/types/issue-list.response";
 import { StatusCategory } from "../../../shared/types/status";
 
 type IssueListItemProps = {

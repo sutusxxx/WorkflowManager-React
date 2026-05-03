@@ -1,6 +1,6 @@
 import { useMutation, useSuspenseQuery } from "@apollo/client/react";
 import { GET_ISSUE_DETAIL, STATUS_TRANSITION, UPDATE_ISSUE } from "~/lib/query/graphql";
-import type { IssueDetailResponse } from "../types/issue-detail.response";
+import type { IssueDetailResponse } from "../../../app/lib/types/issue-detail.response";
 import type { UpdateIssue } from "../types/update-issue";
 
 export function useIssueDetail(issueKey: string) {

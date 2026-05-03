@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client/react";
 import { GET_PROJECTS } from "~/lib/query/graphql";
 import LoadingIndicator from "../../../components/misc/LoadingIndicator";
 import Link from "../../../components/navigation/Link";
-import type { ProjectListResponse } from "../types/project-list-response";
+import type { ProjectListResponse } from "../../../app/lib/types/project-list-response";
 
 export default function ProjectListView() {
     const { data, loading, error } = useQuery<ProjectListResponse>(GET_PROJECTS);

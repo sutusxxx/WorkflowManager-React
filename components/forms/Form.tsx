@@ -29,5 +29,5 @@ export default function Form({ title, onSubmit, children, onReset }: FormProps) 
                 </Box>
             </Stack>
         </Box>
-    )
+    );
 }
