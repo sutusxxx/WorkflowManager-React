@@ -118,6 +118,12 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                 <Grid size={5}>
                     <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
                         <StatusSelect status={issue.status} statuses={issue.project.statuses} onChange={handleStatusChange} />
+                        <InfoBox label="Assigned">
+                            <SelectableTextInput value={issue.assigned?.username} />
+                        </InfoBox>
+                        <InfoBox label="Reporter">
+                            <SelectableTextInput value={issue.reporter?.username} />
+                        </InfoBox>
                         <InfoBox label="Created at">
                             <Typography variant="body2">
                                 {format(issue.createdAt, "MMM d, yyyy · HH:mm")}

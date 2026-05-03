@@ -4,6 +4,7 @@ import type { IssueLink } from "./issue-link";
 import type { Project } from "./project";
 import type { IssueType } from "../enums/IssueType";
 import type { Priority } from "../enums/Priority";
+import type { User } from "./user";
 
 export type IssueDetail = {
     id: number;
@@ -22,4 +23,6 @@ export type IssueDetail = {
     comments: any;
     linkedIssues: IssueLink[];
     priority: Priority;
+    assigned: User;
+    reporter: User;
 };

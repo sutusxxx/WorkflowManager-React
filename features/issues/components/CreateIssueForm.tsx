@@ -32,7 +32,7 @@ export default function CreateIssueForm({ parentIssue, onSave }: CreateIssueForm
 
     return (
         <Form
-            title="Update issue"
+            title="Create issue"
             onSubmit={handleSubmit(onSave)}
             onReset={() => reset()}
         >

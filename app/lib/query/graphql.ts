@@ -87,6 +87,14 @@ export const GET_ISSUE_DETAIL = gql`
             modifiedBy {
                 username
             }
+            assigned {
+                id
+                username
+            }
+            reporter {
+                id
+                username
+            }
         }
     }
 `;
