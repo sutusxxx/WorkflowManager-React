@@ -9,7 +9,9 @@ import MetaChip from "../../../components/misc/MetaChip";
 import { QUERY_PARAM } from "../../../shared/constants/queries.constant";
 import Link from "../../../components/navigation/Link";
 import { useIssueDetail } from "../hooks/useIssueDetail";
-import IssueForm from "../components/IssueForm";
+import UpdateIssueForm from "../components/UpdateIssueForm";
+import { IssueType } from "../../../shared/enums/IssueType";
+import CreateIssueForm from "../components/CreateIssueForm";
 
 export function IssueDetailSkeleton() {
     return (
@@ -55,7 +57,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
         handleStatusChange,
     } = useIssueDetail(issueKey);
 
-    const [openForm, setOpenForm] = useState<boolean>(false);
+    const [openForm, setOpenForm] = useState<"create" | "update" | null>(null);
 
     if (error || !issue) {
         return null;
@@ -94,7 +96,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                 <Button
                     variant="outlined"
                     size="small"
-                    onClick={() => setOpenForm(true)}
+                    onClick={() => setOpenForm("update")}
                 >
                     Edit
                 </Button>
@@ -156,9 +158,11 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                         <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}>
                             Sub-issues
                         </Typography>
-                        <IconButton size="small">
-                            <AddIcon fontSize="small" />
-                        </IconButton>
+                        {issue.type !== IssueType.SUBTASK &&
+                            <IconButton size="small" onClick={() => setOpenForm("create")}>
+                                <AddIcon fontSize="small" />
+                            </IconButton>
+                        }
                     </Stack>
                     <Stack spacing={0.5}>
                         {issue.children?.map((sub) => (
@@ -179,16 +183,29 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                     <Typography variant="body2" color="text.disabled">Comments will appear here</Typography>
                 </Box>
             </Paper>
-            <Dialog open={openForm} onClose={() => setOpenForm(false)}>
+            <Dialog open={!!openForm} onClose={() => setOpenForm(null)}>
                 <DialogContent>
-                    <IssueForm
-                        issue={issue}
-                        onSave={(updateIssue) => {
-                            console.log(updateIssue);
-                            handleUpdate(updateIssue);
-                            setOpenForm(false);
-                        }}
-                    />
+                    {
+                        openForm === "update"
+                            ? (
+                                <UpdateIssueForm
+                                    issue={issue}
+                                    onSave={(updateIssue) => {
+                                        console.log(updateIssue);
+                                        handleUpdate(updateIssue);
+                                        setOpenForm(null);
+                                    }}
+                                />
+                            )
+                            : (
+                                <CreateIssueForm
+                                    parentIssue={issue}
+                                    onSave={(createdIssue) => {
+                                        console.log(createdIssue);
+                                    }}
+                                />
+                            )
+                    }
                 </DialogContent>
             </Dialog>
         </Stack>

@@ -1,20 +1,21 @@
-import { MenuItem, TextField } from "@mui/material";
+import { Stack } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import Form from "../../../components/forms/Form";
 import DateInput from "../../../components/inputs/DateInput";
 import NumberInput from "../../../components/inputs/NumberInput";
+import SelectInput from "../../../components/inputs/SelectInput";
 import TextArea from "../../../components/inputs/TextArea";
 import TextInput from "../../../components/inputs/TextInput";
 import { Priority } from "../../../shared/enums/Priority";
 import type { IssueDetail } from "../../../shared/types/issue-detail";
 import type { UpdateIssue } from "../types/update-issue";
 
-type IssueFormProps = {
+type UpdateIssueFormProps = {
     issue: IssueDetail;
     onSave: (issue: UpdateIssue) => void;
 }
 
-export default function IssueForm({ issue, onSave }: IssueFormProps) {
+export default function UpdateIssueForm({ issue, onSave }: UpdateIssueFormProps) {
     const {
         control,
         handleSubmit,
@@ -36,9 +37,15 @@ export default function IssueForm({ issue, onSave }: IssueFormProps) {
             onSubmit={handleSubmit(onSave)}
             onReset={() => reset()}
         >
+            <Stack direction="row" spacing={1}>
+                <TextInput label="project" value={issue.project.name} />
+                <TextInput label="type" value={issue.type} />
+            </Stack>
+
             <Controller
                 name="title"
                 control={control}
+                rules={{ required: "title is required" }}
                 render={({ field }) => (
                     <TextInput
                         label="title"
@@ -64,40 +71,39 @@ export default function IssueForm({ issue, onSave }: IssueFormProps) {
                 )}
             />
 
-            <Controller
-                name="storyPoints"
-                control={control}
-                render={({ field }) => (
-                    <NumberInput
-                        label="story points"
-                        value={field.value}
-                        onChange={field.onChange}
-                        error={errors.storyPoints}
-                        min={0}
-                        max={40}
-                    />
-                )}
-            />
+            <Stack direction="row" spacing={1}>
+                <Controller
+                    name="storyPoints"
+                    control={control}
+                    render={({ field }) => (
+                        <NumberInput
+                            label="story points"
+                            value={field.value}
+                            onChange={field.onChange}
+                            error={errors.storyPoints}
+                            min={0}
+                            max={40}
+                        />
+                    )}
+                />
 
-            <Controller
-                name="priority"
-                control={control}
-                render={({ field }) => (
-                    <TextField
-                        {...field}
-                        select
-                        label="priority"
-                        error={!!errors.priority}
-                        helperText={errors.priority?.message}
-                    >
-                        {Object.values(Priority).map(priority => (
-                            <MenuItem key={priority} value={priority}>
-                                {priority}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                )}
-            />
+                <Controller
+                    name="priority"
+                    control={control}
+                    render={({ field }) => (
+                        <SelectInput
+                            label="priority"
+                            value={field.value}
+                            onChange={field.onChange}
+                            options={Object.values(Priority).map(priority => ({
+                                label: priority.toLowerCase(),
+                                value: priority,
+                            }))}
+                            error={errors.priority}
+                        />
+                    )}
+                />
+            </Stack>
 
             <Controller
                 name="dueDate"

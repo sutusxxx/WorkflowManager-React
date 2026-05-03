@@ -73,6 +73,7 @@ export const GET_ISSUE_DETAIL = gql`
             project {
                 id
                 key
+                name
                 statuses {
                     id
                     name
