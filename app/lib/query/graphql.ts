@@ -50,6 +50,7 @@ export const GET_ISSUE_DETAIL = gql`
             priority
             storyPoints
             type
+            dueDate
             status {
                 id
                 name

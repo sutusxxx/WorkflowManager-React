@@ -2,21 +2,24 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useRef, useState } from "react";
 
-export type SelectableTextFieldProps = {
+export type SelectableTextInputProps = {
     value: string;
     onBlur?: (value: string) => void;
     acceptOnEnter?: boolean;
     multiline?: boolean;
     minRows?: number;
     maxRows?: number;
+    required?: boolean;
 }
 
-export function SelectableTextField({ value, onBlur, acceptOnEnter, multiline, minRows, maxRows }: SelectableTextFieldProps) {
+export function SelectableTextInput({ value, onBlur, acceptOnEnter, multiline, minRows, maxRows, required }: SelectableTextInputProps) {
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleBlur = (value: string) => {
-        onBlur?.(value);
+        if (!required || value) {
+            onBlur?.(value);
+        };
         setIsEditMode(false);
     };
 
@@ -40,6 +43,11 @@ export function SelectableTextField({ value, onBlur, acceptOnEnter, multiline, m
                 multiline={multiline}
                 minRows={minRows}
                 maxRows={maxRows}
+                required={required}
+                sx={{
+                    backgroundColor: "rgb(242, 242, 242)",
+                    borderRadius: "5px",
+                }}
             />
         )
         : (
@@ -49,9 +57,10 @@ export function SelectableTextField({ value, onBlur, acceptOnEnter, multiline, m
                     height: minRows + "rem",
                     whiteSpace: "pre-wrap",
                     cursor: "text",
+                    minWidth: 100,
                 }}
             >
-                {value}
+                {value ?? ""}
             </Typography>
         )
 }

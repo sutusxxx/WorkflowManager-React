@@ -1,14 +1,15 @@
-import { Box, Button, Chip, Divider, Grid, IconButton, Paper, Skeleton, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Dialog, DialogContent, Divider, Grid, IconButton, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import { format } from "date-fns";
-import { memo } from "react";
+import { memo, useState } from "react";
 import StatusSelect from "../components/StatusSelect";
 import AddIcon from "@mui/icons-material/Add";
-import { SelectableTextField } from "../../../components/inputs/SelectableTextField";
+import { SelectableTextInput } from "../../../components/inputs/SelectableTextInput";
 import InfoBox from "../../../components/misc/InfoBox";
 import MetaChip from "../../../components/misc/MetaChip";
 import { QUERY_PARAM } from "../../../shared/constants/queries.constant";
 import Link from "../../../components/navigation/Link";
 import { useIssueDetail } from "../hooks/useIssueDetail";
+import IssueForm from "../components/IssueForm";
 
 export function IssueDetailSkeleton() {
     return (
@@ -54,6 +55,8 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
         handleStatusChange,
     } = useIssueDetail(issueKey);
 
+    const [openForm, setOpenForm] = useState<boolean>(false);
+
     if (error || !issue) {
         return null;
     }
@@ -74,10 +77,11 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                 }
                 <Chip label={issue.key} color="primary" size="small" />
             </Stack>
-            <SelectableTextField
+            <SelectableTextInput
                 value={issue.title}
                 onBlur={(value) => handleUpdate({ title: value.trim() })}
                 acceptOnEnter
+                required
             />
             <Divider />
             <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1.5}>
@@ -90,6 +94,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                 <Button
                     variant="outlined"
                     size="small"
+                    onClick={() => setOpenForm(true)}
                 >
                     Edit
                 </Button>
@@ -100,7 +105,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                     <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>
                         Description
                     </Typography>
-                    <SelectableTextField
+                    <SelectableTextInput
                         value={issue.description}
                         onBlur={(value) => handleUpdate({ description: value.trim() })}
                         multiline
@@ -174,6 +179,17 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                     <Typography variant="body2" color="text.disabled">Comments will appear here</Typography>
                 </Box>
             </Paper>
+            <Dialog open={openForm} onClose={() => setOpenForm(false)}>
+                <DialogContent>
+                    <IssueForm
+                        issue={issue}
+                        onSave={(updateIssue) => {
+                            handleUpdate(updateIssue);
+                            setOpenForm(false);
+                        }}
+                    />
+                </DialogContent>
+            </Dialog>
         </Stack>
     );
 });

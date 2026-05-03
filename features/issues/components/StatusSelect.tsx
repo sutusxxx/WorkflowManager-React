@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { Status } from "../../../shared/types/status";
-import Select from "../../../components/inputs/Select";
+import SelectInput from "../../../components/inputs/SelectInput";
 
 type StatusSelectProps = {
     status: Status;
@@ -16,7 +16,7 @@ export default function StatusSelect({ status, onChange, statuses }: StatusSelec
     }, [statuses, status]);
 
     return (
-        <Select
+        <SelectInput
             label="Status"
             value={status.id}
             onChange={onChange}

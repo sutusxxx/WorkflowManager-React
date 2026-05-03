@@ -1,5 +1,5 @@
-import { FormControl, InputLabel, MenuItem, Select as MuiSelect, type SelectChangeEvent, type SxProps, type Theme } from "@mui/material";
-import { useState } from "react";
+import { FormControl, InputLabel, MenuItem, Select as MuiSelect, type SxProps, type Theme } from "@mui/material";
+import type { ReactNode } from "react";
 
 export type SelectOption<T> = {
     label: string;
@@ -7,17 +7,17 @@ export type SelectOption<T> = {
 }
 
 export type SelectProps<T> = {
-    label: string;
+    label: ReactNode;
     value: T;
     onChange?: (value: T) => void;
     options: SelectOption<T>[];
     sx?: SxProps<Theme>;
 }
 
-export default function Select<T extends string | number>({ label, value, onChange, options, sx }: SelectProps<T>) {
+export default function SelectInput<T extends string | number>({ label, value, onChange, options, sx }: SelectProps<T>) {
     return (
         <FormControl variant="standard" sx={sx} disabled={!onChange}>
-            <InputLabel>{label}</InputLabel>
+            <InputLabel shrink>{label}</InputLabel>
             <MuiSelect
                 size="small"
                 value={value}

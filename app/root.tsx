@@ -1,6 +1,5 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import { ApolloProvider } from "@apollo/client/react";
-
 import type { Route } from "./+types/root";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -9,6 +8,8 @@ import "@fontsource/roboto/700.css";
 import { makeQueryClient } from "./lib/query/client";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "./styles/theme";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,9 +49,11 @@ export default function App() {
   return (
     <ApolloProvider client={queryClient}>
       <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <Outlet />
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>
+          <Outlet />
+        </ThemeProvider>
+      </LocalizationProvider>
     </ApolloProvider>
   );
 }
