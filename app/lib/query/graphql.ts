@@ -111,6 +111,44 @@ export const STATUS_TRANSITION = gql`
     }
 `;
 
+export const CREATE_ISSSUE = gql`
+    mutation CreateIssue($input: CreateIssueInput!) {
+        createIssue(input: $input) {
+            id
+            title
+            key
+            description
+            priority
+            storyPoints
+            type
+            status {
+                id
+                name
+            }
+            parent {
+                key
+            }
+            children {
+                id
+                key
+                title
+                status {
+                    id
+                    name
+                }
+            }
+            createdAt
+            updatedAt
+            createdBy {
+                username
+            }
+            modifiedBy {
+                username
+            }
+        }
+    }
+`;
+
 export const UPDATE_ISSUE = gql`
     mutation UpdateIssue($id: ID!, $input: UpdateIssueInput!) {
         updateIssue(id: $id, input: $input) {

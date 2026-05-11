@@ -54,6 +54,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
         issue,
         error,
         handleUpdate,
+        handleCreate,
         handleStatusChange,
     } = useIssueDetail(issueKey);
 
@@ -208,6 +209,8 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                                     parentIssue={issue}
                                     onSave={(createdIssue) => {
                                         console.log(createdIssue);
+                                        handleCreate(createdIssue);
+                                        setOpenForm(null);
                                     }}
                                 />
                             )
