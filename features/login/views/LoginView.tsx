@@ -20,10 +20,10 @@ export default function LoginView() {
         return () => clearTimeout(t);
     }, []);
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         const currentPage =
             window.location.pathname === "/login" ? "/" : window.location.pathname;
-        window.location.href = `${BFF_URL}/api/auth/login?redirectTo=${encodeURIComponent(currentPage)}`;
+        window.location.href = `${BFF_URL}/auth/login?redirectTo=${encodeURIComponent(currentPage)}`;
     };
 
     return (

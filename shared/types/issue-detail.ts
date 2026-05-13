@@ -19,7 +19,9 @@ export type IssueDetail = {
     type: IssueType;
     children: Issue[];
     createdAt: Date;
+    createdBy: User;
     updatedAt: Date;
+    modifiedBy: User;
     comments: any;
     linkedIssues: IssueLink[];
     priority: Priority;

@@ -12,6 +12,8 @@ import { useIssueDetail } from "../hooks/useIssueDetail";
 import UpdateIssueForm from "../components/UpdateIssueForm";
 import { IssueType } from "../../../shared/enums/IssueType";
 import CreateIssueForm from "../components/CreateIssueForm";
+import IssueTypeIcon from "../components/IssueTypeIcon";
+import PriorityIcon from "../components/PriorityIcon";
 
 export function IssueDetailSkeleton() {
     return (
@@ -60,9 +62,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
 
     const [openForm, setOpenForm] = useState<"create" | "update" | null>(null);
 
-    if (error || !issue) {
-        return null;
-    }
+    if (error || !issue) return null;
 
     return (
         <Stack spacing={2} sx={{ p: 3 }}>
@@ -88,11 +88,22 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             />
             <Divider />
             <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1.5}>
-                <Stack direction="row" alignItems="center" gap={2} flexWrap="wrap">
-                    <MetaChip label="Type" value={issue.type} color="primary" />
-                    {issue.storyPoints != null && <MetaChip label="Story points" value={`${issue.storyPoints}`} color="secondary" />}
-                    {issue.dueDate && <MetaChip label="Due" value={format(issue.dueDate, "MMM d, yyyy")} color="warning" />}
-                    {issue.priority && <MetaChip label="Priority" value={issue.priority} color="success" />}
+                <Stack direction="column" gap={0.5} flexWrap="wrap">
+                    <Stack direction="row" width="100%" gap={1}>
+                        <Typography variant="caption" color="text.secondary">Type</Typography>
+                        <Stack direction="row" gap={0.3}>
+                            <IssueTypeIcon issueType={issue.type} />
+                            <Typography variant="caption" fontWeight="bold">{issue.type}</Typography>
+                        </Stack>
+                    </Stack>
+
+                    <Stack direction="row" width="100%" gap={1}>
+                        <Typography variant="caption" color="text.secondary">Priority</Typography>
+                        <Stack direction="row" gap={0.3}>
+                            <PriorityIcon priority={issue.priority} />
+                            <Typography variant="caption" fontWeight="bold">{issue.priority ? issue.priority.toLowerCase() : "-"}</Typography>
+                        </Stack>
+                    </Stack>
                 </Stack>
                 <Button
                     variant="outlined"
@@ -105,34 +116,40 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             <Divider />
             <Grid container spacing={2}>
                 <Grid size={7}>
-                    <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>
-                        Description
-                    </Typography>
-                    <SelectableTextInput
-                        value={issue.description}
-                        onBlur={(value) => handleUpdate({ description: value.trim() })}
-                        multiline
-                        minRows={6}
-                        maxRows={16}
-                    />
+                    <Stack paddingTop={1}>
+                        <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>
+                            Description
+                        </Typography>
+                        <SelectableTextInput
+                            value={issue.description}
+                            onBlur={(value) => handleUpdate({ description: value.trim() })}
+                            multiline
+                            minRows={6}
+                            maxRows={16}
+                        />
+                    </Stack>
                 </Grid>
                 <Grid size={5}>
                     <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
-                        <StatusSelect status={issue.status} statuses={issue.project.statuses} onChange={handleStatusChange} />
+                        <StatusSelect
+                            status={issue.status}
+                            statuses={issue.project.statuses}
+                            onChange={handleStatusChange}
+                        />
                         <InfoBox label="Assigned">
                             <SelectableTextInput value={issue.assigned?.username} />
                         </InfoBox>
                         <InfoBox label="Reporter">
                             <SelectableTextInput value={issue.reporter?.username} />
                         </InfoBox>
-                        <InfoBox label="Created at">
+                        <InfoBox label={`Created at (${issue.createdBy.username})`}>
                             <Typography variant="body2">
                                 {format(issue.createdAt, "MMM d, yyyy · HH:mm")}
                             </Typography>
                         </InfoBox>
                         <Box sx={{ py: 1 }}>
                             <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>
-                                Updated at
+                                {`Updated at (${issue.modifiedBy.username})`}
                             </Typography>
                             <Typography variant="body2">
                                 {format(issue.updatedAt, "MMM d, yyyy · HH:mm")}
@@ -198,7 +215,6 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                                 <UpdateIssueForm
                                     issue={issue}
                                     onSave={(updateIssue) => {
-                                        console.log(updateIssue);
                                         handleUpdate(updateIssue);
                                         setOpenForm(null);
                                     }}
@@ -208,7 +224,6 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                                 <CreateIssueForm
                                     parentIssue={issue}
                                     onSave={(createdIssue) => {
-                                        console.log(createdIssue);
                                         handleCreate(createdIssue);
                                         setOpenForm(null);
                                     }}

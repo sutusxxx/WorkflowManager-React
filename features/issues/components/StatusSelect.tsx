@@ -1,6 +1,8 @@
 import { useMemo } from "react";
-import type { Status } from "../../../shared/types/status";
+import { StatusCategory, type Status } from "../../../shared/types/status";
 import SelectInput from "../../../components/inputs/SelectInput";
+import { Stack } from "@mui/material";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 type StatusSelectProps = {
     status: Status;
@@ -17,7 +19,10 @@ export default function StatusSelect({ status, onChange, statuses }: StatusSelec
 
     return (
         <SelectInput
-            label="Status"
+            label={<Stack direction="row">
+                <span>Status</span>
+                {status.category === StatusCategory.DONE ? <CheckCircleIcon fontSize="small" color="success" /> : null}
+            </Stack>}
             value={status.id}
             onChange={onChange}
             options={options}
