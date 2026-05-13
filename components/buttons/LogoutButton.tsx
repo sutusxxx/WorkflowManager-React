@@ -1,16 +1,12 @@
 import { Button, Typography } from "@mui/material";
-import { useFetcher, useNavigate } from "react-router";
-
-const BFF_URL = "http://localhost:8080";
+import { useNavigate } from "react-router";
+import { clientInstance } from "~/lib/api/client";
 
 export function useLogout() {
     const navigate = useNavigate();
 
     const logout = async () => {
-        await fetch(`${BFF_URL}/api/auth/logout`, {
-            method: "POST",
-            credentials: "include",
-        });
+        await clientInstance.post("auth/logout");
         navigate("/login");
     };
 

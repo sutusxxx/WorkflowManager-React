@@ -116,7 +116,12 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             <Divider />
             <Grid container spacing={2}>
                 <Grid size={7}>
-                    <Stack paddingTop={1}>
+                    <Stack direction="row" gap={1}>
+                        {issue.dueDate && <MetaChip label="Due date" value={format(issue.dueDate, "yyyy-MM-dd")} color="primary" />}
+                        {issue.storyPoints && <MetaChip label="Story points" value={`${issue.storyPoints}`} color="warning" />}
+                    </Stack>
+                    {(issue.dueDate || issue.storyPoints) && <Divider sx={{ mt: 1, mb: 1 }} />}
+                    <Stack>
                         <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5 }}>
                             Description
                         </Typography>

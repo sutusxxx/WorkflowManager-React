@@ -8,9 +8,9 @@ export default function MetaChip({ label, value, color }: {
     color: "default" | "primary" | "warning" | "success" | "secondary",
 }) {
     return (
-        <Stack direction="row" alignItems="center" gap={0.5}>
+        <Stack direction="column">
             <Typography variant="caption" color="text.secondary">{label}</Typography>
-            <Chip label={value} color={color} size="small" />
+            <Chip label={value} color={color} size="small" sx={{ minWidth: 40, width: "fit-content" }} />
         </Stack>
     );
 }
