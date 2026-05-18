@@ -1,4 +1,3 @@
-import { Stack } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import Form from "../../../components/forms/Form";
 import DateInput from "../../../components/inputs/DateInput";
@@ -9,6 +8,9 @@ import TextInput from "../../../components/inputs/TextInput";
 import { Priority } from "../../../shared/enums/Priority";
 import type { IssueDetail } from "../../../shared/types/issue-detail";
 import type { UpdateIssue } from "../types/update-issue";
+import { priorityToTextConverter } from "../../../shared/helpers/converters";
+import GridContainer from "../../../components/layouts/GridContainer";
+import GridItem from "../../../components/layouts/GridItem";
 
 type UpdateIssueFormProps = {
     issue: IssueDetail;
@@ -37,85 +39,92 @@ export default function UpdateIssueForm({ issue, onSave }: UpdateIssueFormProps)
             onSubmit={handleSubmit(onSave)}
             onReset={() => reset()}
         >
-            <Stack direction="row" spacing={1}>
-                <TextInput label="project" value={issue.project.name} />
-                <TextInput label="type" value={issue.type} />
-            </Stack>
-
-            <Controller
-                name="title"
-                control={control}
-                rules={{ required: "title is required" }}
-                render={({ field }) => (
-                    <TextInput
-                        label="title"
-                        value={field.value}
-                        onChange={field.onChange}
-                        error={errors.title}
+            <GridContainer columns={2}>
+                <GridItem>
+                    <TextInput label="project" value={issue.project.name} />
+                </GridItem>
+                <GridItem>
+                    <TextInput label="type" value={issue.type} />
+                </GridItem>
+                <GridItem size={2}>
+                    <Controller
+                        name="title"
+                        control={control}
+                        rules={{ required: "title is required" }}
+                        render={({ field }) => (
+                            <TextInput
+                                label="title"
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.title}
+                            />
+                        )}
                     />
-                )}
-            />
-
-            <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                    <TextArea
-                        label="description"
-                        value={field.value}
-                        onChange={field.onChange}
-                        minRows={5}
-                        maxRows={5}
-                        error={errors.description}
+                </GridItem>
+                <GridItem size={2}>
+                    <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => (
+                            <TextArea
+                                label="description"
+                                value={field.value}
+                                onChange={field.onChange}
+                                minRows={5}
+                                maxRows={5}
+                                error={errors.description}
+                            />
+                        )}
                     />
-                )}
-            />
-
-            <Stack direction="row" spacing={1}>
-                <Controller
-                    name="storyPoints"
-                    control={control}
-                    render={({ field }) => (
-                        <NumberInput
-                            label="story points"
-                            value={field.value}
-                            onChange={field.onChange}
-                            error={errors.storyPoints}
-                            min={0}
-                            max={40}
-                        />
-                    )}
-                />
-
-                <Controller
-                    name="priority"
-                    control={control}
-                    render={({ field }) => (
-                        <SelectInput
-                            label="priority"
-                            value={field.value}
-                            onChange={field.onChange}
-                            options={Object.values(Priority).map(priority => ({
-                                label: priority.toLowerCase(),
-                                value: priority,
-                            }))}
-                            error={errors.priority}
-                        />
-                    )}
-                />
-            </Stack>
-
-            <Controller
-                name="dueDate"
-                control={control}
-                render={({ field }) => (
-                    <DateInput
-                        {...field}
-                        label="due date"
-                        error={errors.dueDate}
+                </GridItem>
+                <GridItem>
+                    <Controller
+                        name="storyPoints"
+                        control={control}
+                        render={({ field }) => (
+                            <NumberInput
+                                label="story points"
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.storyPoints}
+                                min={0}
+                                max={40}
+                            />
+                        )}
                     />
-                )}
-            />
+                </GridItem>
+                <GridItem>
+                    <Controller
+                        name="priority"
+                        control={control}
+                        render={({ field }) => (
+                            <SelectInput
+                                label="priority"
+                                value={field.value}
+                                onChange={field.onChange}
+                                options={Object.values(Priority).map(priority => ({
+                                    label: priorityToTextConverter(priority),
+                                    value: priority,
+                                }))}
+                                error={errors.priority}
+                            />
+                        )}
+                    />
+                </GridItem>
+                <GridItem>
+                    <Controller
+                        name="dueDate"
+                        control={control}
+                        render={({ field }) => (
+                            <DateInput
+                                {...field}
+                                label="due date"
+                                error={errors.dueDate}
+                            />
+                        )}
+                    />
+                </GridItem>
+            </GridContainer>
         </Form>
     );
 }

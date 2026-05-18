@@ -14,6 +14,7 @@ import { IssueType } from "../../../shared/enums/IssueType";
 import CreateIssueForm from "../components/CreateIssueForm";
 import IssueTypeIcon from "../components/IssueTypeIcon";
 import PriorityIcon from "../components/PriorityIcon";
+import { priorityToTextConverter } from "../../../shared/helpers/converters";
 
 export function IssueDetailSkeleton() {
     return (
@@ -101,7 +102,9 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                         <Typography variant="caption" color="text.secondary">Priority</Typography>
                         <Stack direction="row" gap={0.3}>
                             <PriorityIcon priority={issue.priority} />
-                            <Typography variant="caption" fontWeight="bold">{issue.priority ? issue.priority.toLowerCase() : "-"}</Typography>
+                            <Typography variant="caption" fontWeight="bold">
+                                {issue.priority ? priorityToTextConverter(issue.priority) : "-"}
+                            </Typography>
                         </Stack>
                     </Stack>
                 </Stack>
@@ -117,8 +120,12 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             <Grid container spacing={2}>
                 <Grid size={7}>
                     <Stack direction="row" gap={1}>
-                        {issue.dueDate && <MetaChip label="Due date" value={format(issue.dueDate, "yyyy-MM-dd")} color="primary" />}
-                        {issue.storyPoints && <MetaChip label="Story points" value={`${issue.storyPoints}`} color="warning" />}
+                        {issue.dueDate &&
+                            <MetaChip label="Due date" value={format(issue.dueDate, "yyyy-MM-dd")} color="primary" />
+                        }
+                        {issue.storyPoints &&
+                            <MetaChip label="Story points" value={`${issue.storyPoints}`} color="warning" />
+                        }
                     </Stack>
                     {(issue.dueDate || issue.storyPoints) && <Divider sx={{ mt: 1, mb: 1 }} />}
                     <Stack>
@@ -167,12 +174,22 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             {issue.linkedIssues?.length > 0 &&
                 <Stack spacing={2}>
                     <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
-                        <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}>
+                        <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}
+                        >
                             Linked issues
                         </Typography>
                         <Stack spacing={0.5}>
                             {issue.linkedIssues.map((linkedIssue) => (
-                                <Stack key={linkedIssue.targetIssue.key} direction="row" alignItems="center" gap={1} sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}>
+                                <Stack
+                                    key={linkedIssue.targetIssue.key}
+                                    direction="row"
+                                    alignItems="center"
+                                    gap={1}
+                                    sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}
+                                >
                                     <Typography variant="caption" color="text.secondary">{linkedIssue.linkType}</Typography>
                                     <Typography variant="body2">{linkedIssue.targetIssue.key}</Typography>
                                 </Stack>
@@ -184,7 +201,11 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             <Stack>
                 <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
                     <Stack direction="row" justifyContent="space-between">
-                        <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}>
+                        <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}
+                        >
                             Sub-issues
                         </Typography>
                         {issue.type !== IssueType.SUBTASK &&
@@ -195,7 +216,13 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                     </Stack>
                     <Stack spacing={0.5}>
                         {issue.children?.map((sub) => (
-                            <Stack key={sub.key} direction="row" alignItems="center" gap={1} sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}>
+                            <Stack
+                                key={sub.key}
+                                direction="row"
+                                alignItems="center"
+                                gap={1}
+                                sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}
+                            >
                                 <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${sub.key}` }}>{sub.key}</Link>
                                 <Typography variant="body2">{sub.title}</Typography>
                             </Stack>
@@ -205,10 +232,23 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             </Stack>
             <Divider />
             <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}>
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}
+                >
                     Comments
                 </Typography>
-                <Box sx={{ p: 3, textAlign: "center", bgcolor: "action.hover", borderRadius: 1, border: "1px dashed", borderColor: "divider" }}>
+                <Box
+                    sx={{
+                        p: 3,
+                        textAlign: "center",
+                        bgcolor: "action.hover",
+                        borderRadius: 1,
+                        border: "1px dashed",
+                        borderColor: "divider"
+                    }}
+                >
                     <Typography variant="body2" color="text.disabled">Comments will appear here</Typography>
                 </Box>
             </Paper>

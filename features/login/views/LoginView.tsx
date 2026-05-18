@@ -10,7 +10,7 @@ import {
 import LoginIcon from "@mui/icons-material/Login";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-const BFF_URL = "http://localhost:8080";
+const BFF_URL = "http://localhost:8082";
 
 export default function LoginView() {
     const [visible, setVisible] = useState(false);
@@ -21,8 +21,7 @@ export default function LoginView() {
     }, []);
 
     const handleLogin = async () => {
-        const currentPage =
-            window.location.pathname === "/login" ? "/" : window.location.pathname;
+        const currentPage = window.location.pathname === "/login" ? "/" : window.location.pathname;
         window.location.href = `${BFF_URL}/auth/login?redirectTo=${encodeURIComponent(currentPage)}`;
     };
 

@@ -8,15 +8,17 @@ export type DateInputProps = {
     value: Date;
     onChange?: (value: Date | null) => void;
     error?: FieldError;
+    size?: number;
 }
 
-export default function DateInput({ label, value, onChange, error }: DateInputProps) {
+export default function DateInput({ label, value, onChange, error, size }: DateInputProps) {
     return (
         <DatePicker
             label={label}
             value={value ? dayjs(value) : null}
             onChange={onChange ? (value) => value && onChange(value.toDate()) : undefined}
             disabled={!onChange}
+            format="YYYY-MM-DD"
             slotProps={{
                 field: { clearable: true, onClear: () => onChange?.(null) },
                 textField: {
@@ -27,8 +29,12 @@ export default function DateInput({ label, value, onChange, error }: DateInputPr
                     },
                     error: !!error,
                     helperText: error?.message,
+                    size: "small",
                 },
             }}
+            sx={{
+                width: size + "rem",
+            }}
         />
-    )
+    );
 }
