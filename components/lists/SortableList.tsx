@@ -23,17 +23,10 @@ function SortableItem({ id, index, children }: SortableItemProps) {
 
 export default function SortableList<T>({ items, onSort, getId, renderComponent }: {
     items: T[],
-    onSort: (sortedItems: T[]) => void,
+    onSort: (prevIndex: number, newIndex: number) => void,
     getId: (item: T) => Identifier,
     renderComponent: (item: T) => ReactNode,
 }) {
-    const sortItems = useCallback((index: number, initialIndex: number) => {
-        const newItems = [...items];
-        const [removed] = newItems.splice(initialIndex, 1);
-        newItems.splice(index, 0, removed);
-        return newItems;
-    }, [items]);
-
     return (
         <DragDropProvider
             onDragEnd={(event) => {
@@ -43,9 +36,8 @@ export default function SortableList<T>({ items, onSort, getId, renderComponent 
 
                 if (isSortable(source)) {
                     const { initialIndex, index } = source;
-
                     if (initialIndex !== index) {
-                        onSort(sortItems(index, initialIndex));
+                        onSort(initialIndex, index);
                     }
                 }
             }}

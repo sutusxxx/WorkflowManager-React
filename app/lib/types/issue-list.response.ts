@@ -1,11 +1,5 @@
-import type { Issue } from "../../../shared/types/issue";
-import type { Status } from "../../../shared/types/status";
+import type { Project } from "../../../shared/types/project";
 
 export type IssueListResponse = {
-    projectById: {
-        id: string;
-        key: string;
-        statuses: Status[];
-        issues: Issue[],
-    }
+    projectById: Project;
 };

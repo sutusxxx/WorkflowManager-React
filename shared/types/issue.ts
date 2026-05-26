@@ -10,4 +10,5 @@ export type Issue = {
     type: IssueType;
     status: Status;
     priority: Priority;
+    nextIssueId: string | null;
 };

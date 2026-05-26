@@ -1,4 +1,5 @@
 import type { Issue } from "./issue";
+import type { Sprint } from "./sprint";
 import type { Status } from "./status";
 
 export type Project = {
@@ -9,5 +10,6 @@ export type Project = {
     statuses: Status[];
     createdAt: Date;
     updatedAt: Date;
+    sprints: Sprint[];
     issues: Issue[];
 };

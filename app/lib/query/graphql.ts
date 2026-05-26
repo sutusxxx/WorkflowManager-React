@@ -14,6 +14,83 @@ export const GET_PROJECTS = gql`
     }
 `;
 
+export const GET_ACTIVE_SPRINT = gql`
+    query GetActiveSprint($projectId: ID!) {
+        activeSprint(projectId: $projectId) {
+            id
+            name
+            goal
+            startDate
+            endDate
+            active
+            project {
+                id
+                name
+                key
+            }
+            issues {
+                id
+                key
+                type
+                title
+                priority
+                status {
+                    id
+                    name
+                    color
+                    category
+                }
+                nextIssueId
+            }
+            createdAt
+            createdBy {
+                id
+                username
+            }
+            updatedAt
+            modifiedBy {
+                id
+                username
+            }
+        }
+    }
+`;
+
+export const GET_SPRINTS = gql`
+    query GetSprints($projectId: ID!) {
+        projectById(id: $projectId) {
+            id
+            key
+            statuses {
+                id
+                name
+            }
+            sprints {
+                id
+                name
+                goal
+                startDate
+                endDate
+                active
+                issues {
+                    id
+                    key
+                    type
+                    title
+                    priority
+                    status {
+                        id
+                        name
+                        color
+                        category
+                    }
+                    nextIssueId
+                }
+            }
+        }
+    }
+`;
+
 export const GET_ISSUE_LIST = gql`
     query GetIssues($projectId: ID!) {
         projectById(id: $projectId) {
@@ -185,4 +262,16 @@ export const UPDATE_ISSUE = gql`
             }
         }
     } 
+`;
+
+export const MOVE_ISSUE = gql`
+    mutation MoveIssue($sprintId: ID!, $input: MoveIssueInput) {
+        moveIssue(sprintId: $sprintId, input: $input) {
+            id
+            issues {
+                id
+                nextIssueId
+            }
+        }
+    }
 `;

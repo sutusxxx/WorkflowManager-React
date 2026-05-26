@@ -1,8 +1,8 @@
-import IssueListView from "../../features/issues/views/IssueListView";
+import IssuesView from "../../features/issues/views/IssuesView";
 import type { Route } from "./+types/project.issues";
 
 export default function Page({
   params,
 }: Route.ComponentProps) {
-    return <IssueListView projectId={params.projectId} />;
+  return <IssuesView projectId={params.projectId} />;
 }
