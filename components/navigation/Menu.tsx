@@ -22,7 +22,7 @@ export default function Menu({ anchorEl, open, onClose, items }: MenuProps) {
       anchorEl={anchorEl}
     >
       {items.map(item => (
-        <MenuItem onClick={item.onClick}>
+        <MenuItem onClick={item.onClick} sx={{ minWidth: 100 }}>
           <Typography variant="body2">{item.label}</Typography>
         </MenuItem>
       ))}

@@ -17,7 +17,7 @@ function SortableItem({ id, index, children }: SortableItemProps) {
     const { ref } = useSortable({ id, index });
 
     return (
-        <Card variant="outlined" ref={ref} sx={{ padding: 1 }}>{children}</Card>
+        <Card variant="outlined" ref={ref} sx={{ padding: 1, borderRadius: "25px" }}>{children}</Card>
     );
 }
 

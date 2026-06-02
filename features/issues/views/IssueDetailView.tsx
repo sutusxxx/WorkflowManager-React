@@ -142,7 +142,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                     </Stack>
                 </Grid>
                 <Grid size={5}>
-                    <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
+                    <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
                         <StatusSelect
                             status={issue.status}
                             statuses={issue.project.statuses}
@@ -173,7 +173,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             <Divider />
             {issue.linkedIssues?.length > 0 &&
                 <Stack spacing={2}>
-                    <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
+                    <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -199,7 +199,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                 </Stack>
             }
             <Stack>
-                <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
+                <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
                     <Stack direction="row" justifyContent="space-between">
                         <Typography
                             variant="caption"
@@ -231,7 +231,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                 </Paper>
             </Stack>
             <Divider />
-            <Paper variant="outlined" sx={{ borderRadius: 2, p: 1.5 }}>
+            <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
                 <Typography
                     variant="caption"
                     color="text.secondary"
