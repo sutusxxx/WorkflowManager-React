@@ -12,31 +12,31 @@ export function useIssueDetail(issueKey: string) {
 
     const [updateIssue] = useMutation(UPDATE_ISSUE);
     const [createIssue] = useMutation(CREATE_ISSSUE);
-    const [changeStatus] = useMutation(STATUS_TRANSITION);
+    const [changeIssueStatus] = useMutation(STATUS_TRANSITION);
 
-    const handleUpdate = (fields: Partial<UpdateIssue>) => {
+    const update = (fields: Partial<UpdateIssue>) => {
         if (data?.issueByKey?.id) {
             updateIssue({ variables: { id: data.issueByKey.id, input: fields } });
         }
     };
 
-    const handleCreate = (fields: CreateIssue) => {
+    const createChild = (fields: CreateIssue) => {
         if (data?.issueByKey?.id) {
-            createIssue({ variables: { input: fields } });
+            createIssue({ variables: { input: { ...fields, parentId: data.issueByKey.id } } });
         }
     }
 
-    const handleStatusChange = (newStatusId: string) => {
+    const changeStatus = (newStatusId: string) => {
         if (data?.issueByKey?.id) {
-            changeStatus({ variables: { issueId: data.issueByKey.id, input: { newStatusId } } });
+            changeIssueStatus({ variables: { issueId: data.issueByKey.id, input: { newStatusId } } });
         }
     };
 
     return {
         issue: data?.issueByKey,
         error,
-        handleUpdate,
-        handleCreate,
-        handleStatusChange,
+        update,
+        createChild,
+        changeStatus,
     };
 }

@@ -1,118 +1,25 @@
 import { gql } from "@apollo/client";
 
-export const GET_PROJECTS = gql`
-    query GetProjects {
-        projects {
-            id
-            key
-            name
-            statuses {
-                id
-                name
-            }
-        }
-    }
-`;
-
-export const GET_ACTIVE_SPRINT = gql`
-    query GetActiveSprint($projectId: ID!) {
-        activeSprint(projectId: $projectId) {
-            id
-            name
-            goal
-            startDate
-            endDate
-            active
-            project {
-                id
-                name
-                key
-            }
-            issues {
+/* -- Issue related queries -- */
+export const GET_ISSUES = gql`
+    query GetIssues($projectId: ID!, $page: Int, $pageSize: Int) {
+        issues(projectId: $projectId, page: $page, pageSize: $pageSize) {
+            items {
                 id
                 key
-                type
                 title
-                priority
                 status {
                     id
                     name
-                    color
                     category
+                    color
                 }
-                nextIssueId
-            }
-            createdAt
-            createdBy {
-                id
-                username
-            }
-            updatedAt
-            modifiedBy {
-                id
-                username
-            }
-        }
-    }
-`;
-
-export const GET_SPRINTS = gql`
-    query GetSprints($projectId: ID!) {
-        projectById(id: $projectId) {
-            id
-            key
-            statuses {
-                id
-                name
-            }
-            sprints {
-                id
-                name
-                goal
-                startDate
-                endDate
-                active
-                issues {
-                    id
-                    key
-                    type
-                    title
-                    priority
-                    status {
-                        id
-                        name
-                        color
-                        category
-                    }
-                    nextIssueId
-                }
-            }
-        }
-    }
-`;
-
-export const GET_ISSUE_LIST = gql`
-    query GetIssues($projectId: ID!) {
-        projectById(id: $projectId) {
-            id
-            key
-            statuses {
-                id
-                name
-            }
-            issues {
-                id
-                key
-                type
-                title
                 priority
-                status {
-                    id
-                    name
-                    color
-                    category
-                }
+                type
             }
+            total
+            page
+            pageSize
         }
     }
 `;
@@ -176,6 +83,7 @@ export const GET_ISSUE_DETAIL = gql`
     }
 `;
 
+/* -- Issue related mutations -- */
 export const STATUS_TRANSITION = gql`
     mutation StatusTransition($issueId: ID!, $input: TransitionIssueInput!) {
         changeStatus(issueId: $issueId, input: $input) {
@@ -236,6 +144,7 @@ export const UPDATE_ISSUE = gql`
             priority
             storyPoints
             type
+            dueDate
             status {
                 id
                 name
@@ -264,13 +173,331 @@ export const UPDATE_ISSUE = gql`
     } 
 `;
 
-export const MOVE_ISSUE = gql`
-    mutation MoveIssue($sprintId: ID!, $input: MoveIssueInput) {
-        moveIssue(sprintId: $sprintId, input: $input) {
+export const DELETE_ISSUE = gql`
+    mutation DeleteIssue($issueId: ID!) {
+        deleteIssue(id: $issueId)
+    }
+`;
+
+/* -- Project related queries -- */
+export const GET_PROJECTS = gql`
+    query GetProjects($first: Int, $after: String) {
+        projects(first: $first, after: $after) {
+            pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+            }
+            edges {
+            node {
+                id
+                name
+                key
+                statuses {
+                id
+                name
+                }
+            }
+            }
+        }
+    }
+`;
+
+export const GET_PROJECT_DETAIL = gql`
+    GetProjectDetail($id: ID!) {
+        project(id: $id) {
+            id
+            name
+            key
+            description
+            statuses
+            createdAt
+            updatedAt
+            createdBy {
+                id
+                username
+            }
+            modifiedBy {
+                id
+                username
+            }
+            visibility
+            statuses {
+                id
+                name
+                category
+                color
+                displayOrder
+            }
+        }
+    }
+`;
+
+/* -- Project related mutations -- */
+export const CREATE_RPOJECT = gql`
+    mutation CreateProject($input: CreateProjectInput!) {
+        createProject(input: $input) {
+            id
+            name
+            key
+            description
+            statuses
+            createdAt
+            updatedAt
+            createdBy {
+                id
+                username
+            }
+            modifiedBy {
+                id
+                username
+            }
+            visibility
+            statuses {
+                id
+                name
+                category
+                color
+                displayOrder
+                allowedTransitionIds
+            }
+        }
+    }
+`;
+
+export const UPDATE_PROJECT = gql`
+    mutation UpdateProject($id: ID!, $input: UpdateProjectInput!) {
+        updateProject(id: $id, input: $input) {
+            id
+            name
+            key
+            description
+            statuses
+            createdAt
+            updatedAt
+            createdBy {
+                id
+                username
+            }
+            modifiedBy {
+                id
+                username
+            }
+            visibility
+            statuses {
+                id
+                name
+                category
+                color
+                displayOrder
+                allowedTransitionIds
+            }
+        }
+    }
+`;
+
+export const CREATE_STATUS = gql`
+    mutation CreateStatus($projectId: ID!, $input: CreateStatusInput!) {
+        createStatus(projectId: $projectId, input: $input) {
+            id
+            name
+            color
+            category
+            displayOrder
+            isDefault
+            allowedTransitionIds
+        }
+    }
+`;
+
+export const ADD_TRANSITION = gql`
+    mutation AddTransition($projectId: ID!, $input: AddTransitionInput) {
+        addTransition(projectId: $projectId, input: $input) {
+            id
+            name
+            key
+            description
+            statuses
+            createdAt
+            updatedAt
+            createdBy {
+                id
+                username
+            }
+            modifiedBy {
+                id
+                username
+            }
+            visibility
+            statuses {
+                id
+                name
+                category
+                color
+                displayOrder
+            }
+        }
+    }
+`;
+
+/* -- Sprint and Backlog related queries -- */
+export const GET_SPRINT_BOARD = gql`
+    query GetSprintBoard($projectId: ID!) {
+        sprintBoard(projectId: $projectId) {
+            id
+            name
+            goal
+            startDate
+            endDate
+            project {
+                id
+                name
+                key
+                statuses {
+                    id
+                    name
+                    color
+                    displayOrder
+                    category
+                }
+            }
+            issues {
+                id
+                title
+                key
+                nextIssueId
+                status {
+                    id
+                    name
+                    color
+                    category
+                }
+            }
+            createdAt
+            createdBy {
+                id
+                username
+            }
+            updatedAt
+            modifiedBy {
+                id
+                username
+            }
+        }
+    }
+`;
+
+export const GET_BACKLOG = gql`
+    query GetBacklog($projectId: ID!, $first: Int, $after: String) {
+        backlog(projectId: $projectId, first: $first, after: $after) {
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                startCursor
+                endCursor
+            }
+            edges {
+                node {
+                id
+                key
+                createdAt
+                }
+            }
+        }
+    }
+`;
+
+/* -- Sprint and Backlog related mutations -- */
+export const CREATE_SPRINT = gql`
+    mutation CreateSprint($projectId: ID!, input: CreateSprintInput!) {
+        createSprint(projectId: $projectId, input: $input) {
+            id
+            name
+            goal
+            startDate
+            endDate
+            active
+            createdAt
+            createdBy {
+                id
+                username
+            }
+            updatedAt
+            modifiedBy {
+                id
+                username
+            }
+        }
+    }
+`;
+
+export const UPDATE_SPRINT = gql`
+    mutation UpdateSprint($id: ID!, input: UpdateSprintInput!) {
+        updateSprint(idd: $id, input: $input) {
+            id
+            name
+            goal
+            startDate
+            endDate
+            active
+            createdAt
+            createdBy {
+                id
+                username
+            }
+            updatedAt
+            modifiedBy {
+                id
+                username
+            }
+        }
+    }
+`;
+
+export const ACTIVATE_SPRINT = gql`
+    ActivateSprint($id: ID!) {
+        activate(id: $id) {
+            id
+            name
+            goal
+            startDate
+            endDate
+            active
+            createdAt
+            createdBy {
+                id
+                username
+            }
+            updatedAt
+            modifiedBy {
+                id
+                username
+            }
+        }
+    }
+`;
+
+export const MOVE_TO_SPRINT = gql`
+    mutation MoveToSprint($sprintId: ID!, input: MoveIssueInput!) {
+        moveToSprint(sprintId: $sprintId, input: $input) {
+            id
+            name
+            issues {
+                id
+                key
+            }
+        }
+    }
+`;
+
+export const MOVE_TO_BACKLOG = gql`
+    mutation MoveToBacklog($issueId: ID!) {
+        removeFromSprint(issueId: $issueId) {
             id
             issues {
                 id
-                nextIssueId
+                key
             }
         }
     }

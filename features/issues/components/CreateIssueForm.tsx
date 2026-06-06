@@ -7,16 +7,17 @@ import TextArea from "../../../components/inputs/TextArea";
 import TextInput from "../../../components/inputs/TextInput";
 import { IssueType } from "../../../shared/enums/IssueType";
 import { Priority } from "../../../shared/enums/Priority";
-import type { IssueDetail } from "../../../shared/types/issue-detail";
 import type { CreateIssue } from "../types/create-issue";
 import { Stack } from "@mui/material";
+import type { Project } from "../../../shared/types/project";
 
 type CreateIssueFormProps = {
-    parentIssue: IssueDetail;
+    project: Project;
+    allowedTypes: IssueType[];
     onSave: (issue: CreateIssue) => void;
 }
 
-export default function CreateIssueForm({ parentIssue, onSave }: CreateIssueFormProps) {
+export default function CreateIssueForm({ project, allowedTypes, onSave }: CreateIssueFormProps) {
     const {
         control,
         handleSubmit,
@@ -24,9 +25,9 @@ export default function CreateIssueForm({ parentIssue, onSave }: CreateIssueForm
         formState: { errors },
     } = useForm<CreateIssue>({
         defaultValues: {
-            projectId: parentIssue.project.id,
+            projectId: project.id,
             priority: Priority.LOW,
-            type: parentIssue.type !== IssueType.EPIC ? IssueType.SUBTASK : IssueType.STORY,
+            type: allowedTypes.length > 0 ? allowedTypes[0] : undefined,
         },
     });
 
@@ -36,7 +37,7 @@ export default function CreateIssueForm({ parentIssue, onSave }: CreateIssueForm
             onSubmit={handleSubmit(onSave)}
             onReset={() => reset()}
         >
-            <TextInput label="project" value={parentIssue.project.name} />
+            <TextInput label="project" value={project.name} />
 
             <Controller
                 name="title"
@@ -76,15 +77,10 @@ export default function CreateIssueForm({ parentIssue, onSave }: CreateIssueForm
                         label="type"
                         value={field.value}
                         onChange={field.onChange}
-                        options={Object.values(IssueType)
-                            .filter(type =>
-                                (parentIssue.type !== type) &&
-                                ((parentIssue.type !== IssueType.EPIC && type === IssueType.SUBTASK) ||
-                                    (parentIssue.type === IssueType.EPIC && type !== IssueType.SUBTASK)))
-                            .map(type => ({
-                                label: type.toLowerCase(),
-                                value: type,
-                            }))}
+                        options={allowedTypes.map(type => ({
+                            label: type.toLowerCase(),
+                            value: type,
+                        }))}
                         error={errors.type}
                     />
                 )}

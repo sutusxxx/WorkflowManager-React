@@ -15,6 +15,7 @@ import CreateIssueForm from "../components/CreateIssueForm";
 import IssueTypeIcon from "../components/IssueTypeIcon";
 import PriorityIcon from "../components/PriorityIcon";
 import { priorityToTextConverter } from "../../../shared/helpers/converters";
+import SubIssueList from "../components/SubIssueList";
 
 export function IssueDetailSkeleton() {
     return (
@@ -56,9 +57,9 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
     const {
         issue,
         error,
-        handleUpdate,
-        handleCreate,
-        handleStatusChange,
+        update,
+        createChild,
+        changeStatus,
     } = useIssueDetail(issueKey);
 
     const [openForm, setOpenForm] = useState<"create" | "update" | null>(null);
@@ -83,7 +84,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             </Stack>
             <SelectableTextInput
                 value={issue.title}
-                onBlur={(value) => handleUpdate({ title: value.trim() })}
+                onBlur={(value) => update({ title: value.trim() })}
                 acceptOnEnter
                 required
             />
@@ -134,7 +135,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                         </Typography>
                         <SelectableTextInput
                             value={issue.description}
-                            onBlur={(value) => handleUpdate({ description: value.trim() })}
+                            onBlur={(value) => update({ description: value.trim() })}
                             multiline
                             minRows={6}
                             maxRows={16}
@@ -146,7 +147,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                         <StatusSelect
                             status={issue.status}
                             statuses={issue.project.statuses}
-                            onChange={handleStatusChange}
+                            onChange={changeStatus}
                         />
                         <InfoBox label="Assigned">
                             <SelectableTextInput value={issue.assigned?.username} />
@@ -172,7 +173,7 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
             </Grid>
             <Divider />
             {issue.linkedIssues?.length > 0 &&
-                <Stack spacing={2}>
+                <>
                     <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
                         <Typography
                             variant="caption"
@@ -196,41 +197,30 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                             ))}
                         </Stack>
                     </Paper>
-                </Stack>
+                    <Divider />
+                </>
             }
-            <Stack>
-                <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
-                    <Stack direction="row" justifyContent="space-between">
-                        <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}
-                        >
-                            Sub-issues
-                        </Typography>
-                        {issue.type !== IssueType.SUBTASK &&
+            {
+                issue.type !== IssueType.SUBTASK &&
+                <>
+                    <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography
+                                variant="caption"
+                                color="text.secondary"
+                                sx={{ mb: 1, display: "block", textTransform: "uppercase", letterSpacing: 1 }}
+                            >
+                                Sub-issues
+                            </Typography>
                             <IconButton size="small" onClick={() => setOpenForm("create")}>
                                 <AddIcon fontSize="small" />
                             </IconButton>
-                        }
-                    </Stack>
-                    <Stack spacing={0.5}>
-                        {issue.children?.map((sub) => (
-                            <Stack
-                                key={sub.key}
-                                direction="row"
-                                alignItems="center"
-                                gap={1}
-                                sx={{ py: 0.5, borderBottom: "0.5px solid", borderColor: "divider" }}
-                            >
-                                <Link to={{ search: `?${QUERY_PARAM.SELECTED_ISSUE}=${sub.key}` }}>{sub.key}</Link>
-                                <Typography variant="body2">{sub.title}</Typography>
-                            </Stack>
-                        ))}
-                    </Stack>
-                </Paper>
-            </Stack>
-            <Divider />
+                        </Stack>
+                        <SubIssueList subIssues={issue.children} />
+                    </Paper>
+                    <Divider />
+                </>
+            }
             <Paper variant="outlined" sx={{ borderRadius: "25px", p: 1.5 }}>
                 <Typography
                     variant="caption"
@@ -260,16 +250,20 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                                 <UpdateIssueForm
                                     issue={issue}
                                     onSave={(updateIssue) => {
-                                        handleUpdate(updateIssue);
+                                        update(updateIssue);
                                         setOpenForm(null);
                                     }}
                                 />
                             )
                             : (
                                 <CreateIssueForm
-                                    parentIssue={issue}
+                                    project={issue.project}
+                                    allowedTypes={issue.type === IssueType.EPIC
+                                        ? [IssueType.STORY, IssueType.BUGFIX, IssueType.TASK]
+                                        : [IssueType.SUBTASK]
+                                    }
                                     onSave={(createdIssue) => {
-                                        handleCreate(createdIssue);
+                                        createChild(createdIssue);
                                         setOpenForm(null);
                                     }}
                                 />
