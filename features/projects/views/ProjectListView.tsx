@@ -1,35 +1,21 @@
-import { Stack, Typography } from "@mui/material";
-import { useQuery } from "@apollo/client/react";
-import { GET_PROJECTS } from "~/lib/query/graphql";
+import { Button, Stack, Typography } from "@mui/material";
 import LoadingIndicator from "../../../components/misc/LoadingIndicator";
-import Link from "../../../components/navigation/Link";
-import type { ProjectListResponse } from "../../../app/lib/types/project-list-response";
+import ProjectList from "../components/ProjectList";
+import { useProjectList } from "../hooks/useProjectList";
 
 export default function ProjectListView() {
-    const { data, loading, error } = useQuery<ProjectListResponse>(GET_PROJECTS);
+    const { data, loading, error, loadMore } = useProjectList();
 
     if (loading) return <LoadingIndicator />;
     if (error) return <Typography variant="body2" color="error">Cannot fetch projects</Typography>
-    if (!data?.projects.length) return <Typography variant="body2">Not Found</Typography>
+    if (!data!.edges?.length) return <Typography variant="body2">Not Found</Typography>
 
     return (
-        <Stack
-            spacing={1}
-            sx={{ marginLeft: 2 }}
-        >
-            {data.projects.map(project =>
-                <Link
-                    to={`/projects/${project.id}/board`}
-                    key={project.key}
-                    sx={{
-                        fontWeight: "bold",
-                        textDecoration: "none",
-                        color: "initial",
-                    }}
-                >
-                    {project.key}
-                </Link>
-            )}
+        <Stack>
+            <ProjectList projects={data!.edges.map(edge => edge.node)} />
+            {data!.pageInfo.hasNextPage &&
+                <Button onClick={loadMore} size="small">Load more</Button>
+            }
         </Stack>
     );
 }

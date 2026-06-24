@@ -13,7 +13,7 @@ export default [
         route("projects/:projectId", "routes/project.tsx", [
             route("summary", "routes/project.summary.tsx"),
             route("board", "routes/project.board.tsx"),
-            route("issues", "routes/project.issues.tsx"),
+            route("backlog", "routes/project.backlog.tsx"),
             route("issues/:issueKey", "routes/issue.tsx"),
         ]),
     ]),

@@ -9,10 +9,13 @@ export default function IssueListHeader({ sprint }: { sprint: Sprint }) {
 
   return (
     <>
-      <Stack direction="row" justifyContent="space-between" padding={1}>
-        <Typography variant="body2" fontWeight={500}>
-          {sprint.name}
-        </Typography>
+      <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" gap={1}>
+          <Typography variant="body2" fontWeight={500}>
+            {sprint.name}
+          </Typography>
+          <Typography variant="caption">{sprint.active ? "active" : "not active"}</Typography>
+        </Stack>
         <Tooltip title="Edit sprint" arrow>
           <IconButton
             size="small"

@@ -205,7 +205,7 @@ export const GET_PROJECTS = gql`
 `;
 
 export const GET_PROJECT_DETAIL = gql`
-    GetProjectDetail($id: ID!) {
+    query GetProjectDetail($id: ID!) {
         project(id: $id) {
             id
             name
@@ -342,6 +342,58 @@ export const ADD_TRANSITION = gql`
 `;
 
 /* -- Sprint and Backlog related queries -- */
+export const GET_SPRINTS = gql`
+    query GetSprints($projectId: ID!, $page: Int!, $pageSize: Int!) {
+        sprints(projectId: $projectId, page: $page, pageSize: $pageSize) {
+            items {
+                id
+                name
+                goal
+                startDate
+                endDate
+                project {
+                    id
+                    name
+                    key
+                    statuses {
+                        id
+                        name
+                        color
+                        displayOrder
+                        category
+                    }
+                }
+                issues {
+                    id
+                    title
+                    key
+                    nextIssueId
+                    type
+                    status {
+                        id
+                        name
+                        color
+                        category
+                    }
+                }
+                createdAt
+                createdBy {
+                    id
+                    username
+                }
+                updatedAt
+                modifiedBy {
+                    id
+                    username
+                }
+            }
+            total
+            page
+            pageSize
+        }
+    }
+`;
+
 export const GET_SPRINT_BOARD = gql`
     query GetSprintBoard($projectId: ID!) {
         sprintBoard(projectId: $projectId) {
@@ -367,6 +419,7 @@ export const GET_SPRINT_BOARD = gql`
                 title
                 key
                 nextIssueId
+                type
                 status {
                     id
                     name
@@ -399,9 +452,17 @@ export const GET_BACKLOG = gql`
             }
             edges {
                 node {
-                id
-                key
-                createdAt
+                    id
+                    title
+                    key
+                    nextIssueId
+                    type
+                    status {
+                        id
+                        name
+                        color
+                        category
+                    }
                 }
             }
         }
@@ -410,14 +471,14 @@ export const GET_BACKLOG = gql`
 
 /* -- Sprint and Backlog related mutations -- */
 export const CREATE_SPRINT = gql`
-    mutation CreateSprint($projectId: ID!, input: CreateSprintInput!) {
+    mutation CreateSprint($projectId: ID!, $input: CreateSprintInput!) {
         createSprint(projectId: $projectId, input: $input) {
             id
             name
             goal
             startDate
             endDate
-            active
+            state
             createdAt
             createdBy {
                 id
@@ -433,7 +494,7 @@ export const CREATE_SPRINT = gql`
 `;
 
 export const UPDATE_SPRINT = gql`
-    mutation UpdateSprint($id: ID!, input: UpdateSprintInput!) {
+    mutation UpdateSprint($id: ID!, $input: UpdateSprintInput!) {
         updateSprint(idd: $id, input: $input) {
             id
             name
@@ -456,7 +517,7 @@ export const UPDATE_SPRINT = gql`
 `;
 
 export const ACTIVATE_SPRINT = gql`
-    ActivateSprint($id: ID!) {
+    mutation ActivateSprint($id: ID!) {
         activate(id: $id) {
             id
             name
@@ -479,7 +540,7 @@ export const ACTIVATE_SPRINT = gql`
 `;
 
 export const MOVE_TO_SPRINT = gql`
-    mutation MoveToSprint($sprintId: ID!, input: MoveIssueInput!) {
+    mutation MoveToSprint($sprintId: ID!, $input: MoveIssueInput!) {
         moveToSprint(sprintId: $sprintId, input: $input) {
             id
             name

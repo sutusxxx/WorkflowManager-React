@@ -24,8 +24,8 @@ export default function Form({ title, onSubmit, children, onReset }: FormProps) 
 
                 <Box display="flex" justifyContent="flex-end" gap={1} pt={1}>
                     {onReset &&
-                    <Button variant="outlined" onClick={onReset}>Reset</Button>}
-                    <Button type="submit" variant="contained">Submit</Button>
+                        <Button variant="outlined" onClick={onReset}>Reset</Button>}
+                    <Button type="submit" variant="contained">Save</Button>
                 </Box>
             </Stack>
         </Box>

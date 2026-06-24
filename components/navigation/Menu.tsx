@@ -1,8 +1,7 @@
 import { MenuItem, Typography } from '@mui/material';
 import MuiMenu from '@mui/material/Menu';
-import { useState } from 'react';
 
-type MenuItem = {
+export type MenuItem = {
   label: string;
   onClick: () => void;
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Dialog, DialogContent, Divider, Grid, IconButton, Paper, Skeleton, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Grid, IconButton, Paper, Skeleton, Stack, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { memo, useState } from "react";
 import StatusSelect from "../components/StatusSelect";
@@ -16,6 +16,7 @@ import IssueTypeIcon from "../components/IssueTypeIcon";
 import PriorityIcon from "../components/PriorityIcon";
 import { priorityToTextConverter } from "../../../shared/helpers/converters";
 import SubIssueList from "../components/SubIssueList";
+import Dialog from "../../../components/misc/Dialog";
 
 export function IssueDetailSkeleton() {
     return (
@@ -243,33 +244,31 @@ const IssueDetailView = memo(({ issueKey }: IssueDetailViewProps) => {
                 </Box>
             </Paper>
             <Dialog open={!!openForm} onClose={() => setOpenForm(null)}>
-                <DialogContent>
-                    {
-                        openForm === "update"
-                            ? (
-                                <UpdateIssueForm
-                                    issue={issue}
-                                    onSave={(updateIssue) => {
-                                        update(updateIssue);
-                                        setOpenForm(null);
-                                    }}
-                                />
-                            )
-                            : (
-                                <CreateIssueForm
-                                    project={issue.project}
-                                    allowedTypes={issue.type === IssueType.EPIC
-                                        ? [IssueType.STORY, IssueType.BUGFIX, IssueType.TASK]
-                                        : [IssueType.SUBTASK]
-                                    }
-                                    onSave={(createdIssue) => {
-                                        createChild(createdIssue);
-                                        setOpenForm(null);
-                                    }}
-                                />
-                            )
-                    }
-                </DialogContent>
+                {
+                    openForm === "update"
+                        ? (
+                            <UpdateIssueForm
+                                issue={issue}
+                                onSave={(updateIssue) => {
+                                    update(updateIssue);
+                                    setOpenForm(null);
+                                }}
+                            />
+                        )
+                        : (
+                            <CreateIssueForm
+                                project={issue.project}
+                                allowedTypes={issue.type === IssueType.EPIC
+                                    ? [IssueType.STORY, IssueType.BUGFIX, IssueType.TASK]
+                                    : [IssueType.SUBTASK]
+                                }
+                                onSave={(createdIssue) => {
+                                    createChild(createdIssue);
+                                    setOpenForm(null);
+                                }}
+                            />
+                        )
+                }
             </Dialog>
         </Stack>
     );

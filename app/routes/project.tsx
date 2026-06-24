@@ -1,18 +1,26 @@
 import { Box, Stack, Tab, Tabs } from "@mui/material";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import Container from "../../components/layouts/Container";
-import IssueDetailDialog from "../../features/issues/components/IssueDetailDialog";
 import type { Route } from "./+types/project";
+import { QUERY_PARAM } from "../../shared/constants/queries.constant";
+import Dialog from "../../components/misc/Dialog";
+import IssueDetailView, { IssueDetailSkeleton } from "../../features/issues/views/IssueDetailView";
 
 const PROJECT_TABS = [
     { title: "Summary", path: "summary" },
     { title: "Board", path: "board" },
-    { title: "Issues", path: "issues" },
+    { title: "Backlog", path: "backlog" },
 ];
 
 export default function Project({ params }: Route.ComponentProps) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const handleIssueDialogClose = () => setSearchParams(prev => {
+        prev.delete(QUERY_PARAM.SELECTED_ISSUE);
+        return prev;
+    });
 
     const currentTab = PROJECT_TABS.findIndex(tab => pathname.startsWith(`/projects/${params.projectId}/${tab.path}`));
 
@@ -35,11 +43,13 @@ export default function Project({ params }: Route.ComponentProps) {
                         )}
                     </Tabs>
                 </Box>
-                <Container>
-                    <Outlet />
-                </Container>
+                <Container><Outlet /></Container>
             </Stack>
-            <IssueDetailDialog />
+            {searchParams.has(QUERY_PARAM.SELECTED_ISSUE) &&
+                <Dialog open onClose={handleIssueDialogClose} fullWidth fallback={<IssueDetailSkeleton />}>
+                    <IssueDetailView issueKey={searchParams.get(QUERY_PARAM.SELECTED_ISSUE)!} />
+                </Dialog>
+            }
         </>
     )
 }
