@@ -1,3 +1,4 @@
+import type { SprintState } from "../enums/SprintState";
 import type { Issue } from "./issue";
 
 export type Sprint = {
@@ -7,7 +8,7 @@ export type Sprint = {
   startDate: Date;
   endDate: Date;
   issues: Issue[];
-  active: boolean;
+  state: SprintState;
   createdAt: Date;
   updatedAt: Date;
 };

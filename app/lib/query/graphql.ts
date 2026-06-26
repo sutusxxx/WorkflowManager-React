@@ -351,6 +351,7 @@ export const GET_SPRINTS = gql`
                 goal
                 startDate
                 endDate
+                state
                 project {
                     id
                     name
@@ -420,6 +421,10 @@ export const GET_SPRINT_BOARD = gql`
                 key
                 nextIssueId
                 type
+                children {
+                    id
+                    key
+                }
                 status {
                     id
                     name
@@ -501,7 +506,7 @@ export const UPDATE_SPRINT = gql`
             goal
             startDate
             endDate
-            active
+            state
             createdAt
             createdBy {
                 id
@@ -524,7 +529,7 @@ export const ACTIVATE_SPRINT = gql`
             goal
             startDate
             endDate
-            active
+            state
             createdAt
             createdBy {
                 id
