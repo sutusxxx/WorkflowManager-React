@@ -4,7 +4,7 @@ import ProjectList from "../components/ProjectList";
 import { useProjectList } from "../hooks/useProjectList";
 
 export default function ProjectListView() {
-    const { data, loading, error, loadMore } = useProjectList();
+    const { data, loading, error, loadMore, onProjectSelect } = useProjectList();
 
     if (loading) return <LoadingIndicator />;
     if (error) return <Typography variant="body2" color="error">Cannot fetch projects</Typography>
@@ -12,7 +12,10 @@ export default function ProjectListView() {
 
     return (
         <Stack>
-            <ProjectList projects={data!.edges.map(edge => edge.node)} />
+            <ProjectList
+                projects={data!.edges.map(edge => edge.node)}
+                onClick={onProjectSelect}
+            />
             {data!.pageInfo.hasNextPage &&
                 <Button onClick={loadMore} size="small">Load more</Button>
             }

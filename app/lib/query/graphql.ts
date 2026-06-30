@@ -341,6 +341,12 @@ export const ADD_TRANSITION = gql`
     }
 `;
 
+export const VIEW_PROJECT = gql`
+    mutation ViewProject($projectId: ID!) {
+        viewProject(projectId: $projectId)
+    }
+`;
+
 /* -- Sprint and Backlog related queries -- */
 export const GET_SPRINTS = gql`
     query GetSprints($projectId: ID!, $page: Int!, $pageSize: Int!) {

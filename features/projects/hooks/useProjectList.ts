@@ -1,5 +1,5 @@
-import { useQuery } from "@apollo/client/react";
-import { GET_PROJECTS } from "~/lib/query/graphql";
+import { useMutation, useQuery } from "@apollo/client/react";
+import { GET_PROJECTS, VIEW_PROJECT } from "~/lib/query/graphql";
 import type { ProjectListResponse } from "~/lib/types/project-list-response";
 import type { Connection } from "../../../shared/interfaces/connection";
 import type { Project } from "../../../shared/types/project";
@@ -10,6 +10,7 @@ type useProjectListResult = {
   error?: ErrorLike;
   loading: boolean;
   loadMore: () => void;
+  onProjectSelect: (projectId: string) => void;
 }
 
 export function useProjectList(): useProjectListResult {
@@ -17,6 +18,11 @@ export function useProjectList(): useProjectListResult {
     GET_PROJECTS,
     { variables: { first: 1 } },
   );
+  const [viewProject] = useMutation(VIEW_PROJECT);
+
+  const onProjectSelect = (projectId: string) => {
+    viewProject({ variables: { projectId } });
+  };
 
   const loadMore = () => {
     if (!data?.projects.pageInfo.hasNextPage) return;
@@ -47,5 +53,6 @@ export function useProjectList(): useProjectListResult {
     loading,
     loadMore,
     error,
+    onProjectSelect,
   };
 }

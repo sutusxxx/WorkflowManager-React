@@ -4,11 +4,12 @@ import { Link as ReactRouterLink } from "react-router";
 
 type LinkProps = {
     children: ReactNode;
-    to: string | { pathname?: string, search?: string, hash?: string};
+    to: string | { pathname?: string, search?: string, hash?: string };
+    onClick?: () => void;
     sx?: SxProps<Theme>;
 }
 
-export default function Link({ children, to, sx }: LinkProps) {
+export default function Link({ children, to, onClick, sx }: LinkProps) {
     return (
         <MuiLink
             component={ReactRouterLink}
@@ -19,6 +20,7 @@ export default function Link({ children, to, sx }: LinkProps) {
                 textDecoration: "none",
                 ...sx,
             }}
+            onClick={onClick}
         >
             {children}
         </MuiLink>
