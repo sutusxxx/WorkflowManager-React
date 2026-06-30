@@ -22,7 +22,7 @@ export function KanbanColumn({ status, issues, onIssueClick, onDrop }: KanbanCol
 
   return (
     <Box
-      sx={{ minWidth: 280, flex: "1 1 280px" }}
+      sx={{ minWidth: 250, flex: "1 1 280px" }}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
