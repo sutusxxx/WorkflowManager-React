@@ -13,13 +13,18 @@ import Dialog from "../../../components/misc/Dialog";
 import MoveToSprint from "../components/MoveToSprint";
 import type { Issue } from "../../../shared/types/issue";
 
-const BacklogView = memo(({ projectId }: {
+const BacklogView = memo(({ projectId, onIssueSelect }: {
     projectId: string,
+    onIssueSelect: (issueKey: string) => void,
 }) => {
     const { data: backlogData, error: backlogError, loadMore } = useBacklog(projectId);
     const { data: sprintData, error: sprintError } = useSprintList(projectId);
 
     const [issueToMove, setIssueToMove] = useState<Issue | null>(null);
+
+    const handleIssueSelect = (issue: Issue) => {
+        onIssueSelect(issue.key);
+    };
 
     return (
         <>
@@ -30,7 +35,11 @@ const BacklogView = memo(({ projectId }: {
                             <BorderedContainer>
                                 <Stack gap={1}>
                                     <SprintHeader sprint={sprint} />
-                                    <SprintIssueList sprintId={sprint.id} issues={sprint.issues} />
+                                    <SprintIssueList
+                                        sprintId={sprint.id}
+                                        issues={sprint.issues}
+                                        onIssueSelect={handleIssueSelect}
+                                    />
                                 </Stack>
                             </BorderedContainer>
                         </GridItem>
@@ -45,6 +54,7 @@ const BacklogView = memo(({ projectId }: {
                                 <BacklogIssueList
                                     issues={backlogData.edges.map(edge => edge.node)}
                                     onMoveIssue={(issue) => setIssueToMove(issue)}
+                                    onIssueSelect={handleIssueSelect}
                                 />
                                 {backlogData.pageInfo.hasNextPage &&
                                     <Button onClick={loadMore}>Load more</Button>

@@ -12,9 +12,10 @@ import { useState } from "react";
 type IssueListItemProps = {
   item: Issue;
   menuItems?: MenuItem[];
+  onSelect?: (issue: Issue) => void;
 }
 
-export default function IssueListItem({ item, menuItems }: IssueListItemProps) {
+export default function IssueListItem({ item, menuItems, onSelect }: IssueListItemProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   return (

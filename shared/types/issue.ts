@@ -7,6 +7,7 @@ export type Issue = {
     key: string;
     title: string;
     storyPoints?: number;
+    children: Issue[];
     type: IssueType;
     status: Status;
     priority: Priority;

@@ -4,6 +4,7 @@ export type Status = {
     color: string;
     category: StatusCategory;
     allowedTransitionIds: string[];
+    displayOrder: number;
 };
 
 export enum StatusCategory {

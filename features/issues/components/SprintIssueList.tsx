@@ -8,9 +8,10 @@ import { Box, Typography } from "@mui/material";
 type SprintIssueListProps = {
   sprintId: string;
   issues: Issue[];
+  onIssueSelect?: (issue: Issue) => void;
 }
 
-export default function SprintIssueList({ sprintId, issues }: SprintIssueListProps) {
+export default function SprintIssueList({ sprintId, issues, onIssueSelect }: SprintIssueListProps) {
   const [moveIssue] = useMutation(MOVE_TO_SPRINT);
 
   const handleSort = (prevIndex: number, newIndex: number) => {
@@ -24,7 +25,7 @@ export default function SprintIssueList({ sprintId, issues }: SprintIssueListPro
           issueId: issueToMove.id, nextIssueId: prevIndex < newIndex ? issueOnPosition.nextIssueId : issueOnPosition.id,
         },
       }
-    })
+    });
   }
 
   if (!issues.length) return (
@@ -42,7 +43,7 @@ export default function SprintIssueList({ sprintId, issues }: SprintIssueListPro
       onSort={handleSort}
       getId={(item) => item.key}
       renderComponent={(item) => (
-        <IssueListItem item={item} />
+        <IssueListItem item={item} onSelect={onIssueSelect} />
       )}
     />
   );

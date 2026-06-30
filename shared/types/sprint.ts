@@ -1,5 +1,6 @@
 import type { SprintState } from "../enums/SprintState";
 import type { Issue } from "./issue";
+import type { Project } from "./project";
 
 export type Sprint = {
   id: string;
@@ -9,6 +10,7 @@ export type Sprint = {
   endDate: Date;
   issues: Issue[];
   state: SprintState;
+  project: Project;
   createdAt: Date;
   updatedAt: Date;
 };

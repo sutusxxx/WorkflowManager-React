@@ -1,16 +1,15 @@
 import { Divider, Stack } from "@mui/material";
 import type { Issue } from "../../../shared/types/issue";
 import IssueListItem from "./IssueListItem";
-import { useMutation } from "@apollo/client/react";
-import { MOVE_TO_SPRINT } from "~/lib/query/graphql";
 import React from "react";
 
 type BacklogIssueListProps = {
   issues: Issue[];
   onMoveIssue: (issue: Issue) => void;
+  onIssueSelect?: (issue: Issue) => void;
 }
 
-export default function BacklogIssueList({ issues, onMoveIssue }: BacklogIssueListProps) {
+export default function BacklogIssueList({ issues, onMoveIssue, onIssueSelect }: BacklogIssueListProps) {
   return (
     <Stack spacing={1}>
       {issues.map(issue => (
@@ -18,6 +17,7 @@ export default function BacklogIssueList({ issues, onMoveIssue }: BacklogIssueLi
           <IssueListItem
             item={issue}
             menuItems={[{ label: "Move to sprint", onClick: () => onMoveIssue(issue) }]}
+            onSelect={onIssueSelect}
           />
           <Divider />
         </React.Fragment>
