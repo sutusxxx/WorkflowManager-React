@@ -180,6 +180,20 @@ export const DELETE_ISSUE = gql`
 `;
 
 /* -- Project related queries -- */
+export const GET_RECENT_PROJECTS = gql`
+    query GetRecentProjects($limit: Int!) {
+        recentProjects(limit: $limit) {
+            id
+            name
+            key
+            statuses {
+                id
+                name
+            }
+        }
+    }
+`;
+
 export const GET_PROJECTS = gql`
     query GetProjects($first: Int, $after: String) {
         projects(first: $first, after: $after) {
@@ -195,8 +209,8 @@ export const GET_PROJECTS = gql`
                 name
                 key
                 statuses {
-                id
-                name
+                    id
+                    name
                 }
             }
             }
