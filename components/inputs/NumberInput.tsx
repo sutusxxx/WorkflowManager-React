@@ -3,14 +3,14 @@ import type { FieldError } from "react-hook-form";
 
 type NumberInputProps = {
     label: string;
-    value: number;
+    value: number | null;
     onChange?: (value: number) => void;
     min?: number;
     max?: number;
     error?: FieldError;
 }
 
-export default function NumberInput({label, value, onChange, min, max, error}: NumberInputProps) {
+export default function NumberInput({ label, value, onChange, min, max, error }: NumberInputProps) {
     return (
         <TextField
             label={label}

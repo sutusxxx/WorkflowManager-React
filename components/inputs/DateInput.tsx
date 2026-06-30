@@ -5,7 +5,7 @@ import type { FieldError } from "react-hook-form";
 
 export type DateInputProps = {
     label: ReactNode;
-    value: Date;
+    value: Date | null;
     onChange?: (value: Date | null) => void;
     error?: FieldError;
     size?: number;

@@ -14,7 +14,7 @@ export default function TextInput({ label, value, onChange, error }: TextInputPr
         <TextField
             label={label}
             value={value}
-            onChange={onChange ?  (event) => onChange(event.target.value) : undefined}
+            onChange={onChange ? (event) => onChange(event.target.value) : undefined}
             disabled={!onChange}
             error={!!error}
             helperText={error?.message}

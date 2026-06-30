@@ -33,9 +33,10 @@ export function KanbanColumn({ status, issues, onIssueClick, onDrop }: KanbanCol
         variant="outlined"
         sx={{
           bgcolor: CATEGORY_BG[status.category],
-          borderTop: `3px solid ${status.color}`,
+          borderTop: `4px solid ${status.color}`,
           p: 1.5,
           minHeight: 400,
+          borderRadius: "15px",
         }}
       >
         <Stack

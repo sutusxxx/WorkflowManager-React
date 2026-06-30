@@ -26,48 +26,40 @@ export default function MoveToSprint({ sprints, issue }: MoveToSprintProps) {
     <Box
       sx={{
         display: "flex",
+        width: "100%",
         justifyContent: "center",
       }}
     >
-      <Paper
-        elevation={1}
-        variant="outlined"
-        sx={{
-          p: 3,
-          width: "100%",
-          borderRadius: 2,
-        }}
-      >
-        <FormControl component="fieldset" fullWidth>
-          <FormLabel component="legend" sx={{ mb: 1, fontWeight: 600 }}>
-            Choose a sprint
-          </FormLabel>
-          <RadioGroup
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-          >
-            {sprints.map((sprint) => (
-              <FormControlLabel
-                key={sprint.id}
-                value={sprint.id}
-                control={<Radio />}
-                label={sprint.name + (sprint.state === SprintState.ACTIVE ? " 🟢" : "")}
-              />
-            ))}
-          </RadioGroup>
-        </FormControl>
+      <FormControl component="fieldset" fullWidth>
+        <FormLabel component="legend" sx={{ mb: 1, fontWeight: 600 }}>
+          Choose a sprint
+        </FormLabel>
+        <RadioGroup
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+        >
+          {sprints.map((sprint) => (
+            <FormControlLabel
+              key={sprint.id}
+              value={sprint.id}
+              control={<Radio />}
+              label={sprint.name + (sprint.state === SprintState.ACTIVE ? " 🟢" : "")}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
 
-        <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            disabled={!selected}
-            onClick={!!selected ? handleMoveToSprint : undefined}
-          >
-            Save
-          </Button>
-        </Box>
-      </Paper>
+      <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<SaveIcon />}
+          disabled={!selected}
+          onClick={!!selected ? handleMoveToSprint : undefined}
+        >
+          Save
+        </Button>
+      </Box>
     </Box>
   );
 }

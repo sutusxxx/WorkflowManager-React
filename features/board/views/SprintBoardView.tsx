@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { useSprintBoard } from "../../issues/hooks/useSprintBoard"
+import { useSprintBoard } from "../hooks/useSprintBoard"
 import KanbanBoard from "../components/KanbanBoard";
 
 export default function SprintBoardView({ projectId, onIssueSelect }: {

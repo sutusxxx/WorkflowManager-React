@@ -12,7 +12,7 @@ type IssueCardProps = {
 export function IssueCard({ issue, onClick, onDragStart }: IssueCardProps) {
   return (
     <Card
-      variant="outlined"
+      variant="elevation"
       draggable
       onDragStart={(e) => onDragStart?.(e, issue)}
       onClick={() => onClick?.(issue)}
@@ -21,6 +21,7 @@ export function IssueCard({ issue, onClick, onDragStart }: IssueCardProps) {
         mb: 1,
         "&:hover": { borderColor: "primary.main", boxShadow: 1 },
         transition: "all 0.15s",
+        borderRadius: "15px",
       }}
     >
       <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 } }}>
